@@ -1,0 +1,87 @@
+﻿@model D2D.WebApp.ViewModel.AddOnsVM
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Create Addon</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="col-xl-12 col-md-12">
+            <div class="ms-panel ms-panel-fh">
+                <div class="ms-panel-header">
+                    <h6>Create Addon</h6>
+                </div>
+                <div class="ms-panel-body">
+                    <form class="needs-validation" novalidate>
+                        <div class="form-row">
+                            <div class="col-md-12 mb-3">
+                                <label for="validationCustom01">Addon Name</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="addOnName" id="addOnName" value=" " required>
+                                    <div class="invalid-feedback">
+                                        Enter Name!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" id ="createaddon" type="submit">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+<script>
+    
+</script>
+
+<script>
+
+             $(document).on("click", "#createaddon", function (e) {
+             debugger;
+                 // for preventing browser refresh.
+                 e.preventDefault();
+
+                /* var APIString = 'http://10.12.14.56:3000/manager/createAddOnName';*/
+                 var APIString = '@Model.Connectionstringcreateaddonname';
+                 var addOnNameValue = $('#addOnName').val();
+                 /*$(this).closest('form').find("input[type=text], addOnName").val("");*/
+                 $.ajax({
+                     type: 'POST',
+                     url: APIString,
+                     data: JSON.stringify({
+                         addOnName: addOnNameValue.trim()
+                     }),
+                     dataType: 'json',
+                     contentType: 'application/json',
+                     success: function (data) {
+                         if (data.status) {
+                             toastr.success(data.message);
+                             $('form :input').val('');
+                             /*$(toastr.success(data.message)).find("input[type=text]").val("");*/
+                           } else {
+                             toastr.error(data.message);
+                         }
+
+                     },
+                     //error: function (ajaxContext) {
+                     // toastr.error("Try After Sometime", 'Error');
+                     //}
+                 });
+
+             })
+
+
+</script>

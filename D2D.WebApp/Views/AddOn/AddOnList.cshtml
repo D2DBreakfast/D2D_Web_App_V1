@@ -1,0 +1,1057 @@
+﻿@model D2D.WebApp.ViewModel.AddOnsVM
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="ms-content-wrapper">
+    <div class="row">
+
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">AddOns & Selections List</li>
+                </ol>
+            </nav>
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="align-self-center align-left">
+                            <h6>AddOns List</h6>
+                        </div>
+                        <div>
+                            <button type="button" id="createaddonmodal" class="btn btn-primary">Create AddOn</button>
+                            <button type="button" id="addonitemsmodal" class="btn btn-primary">Create AddOn Items</button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="ms-panel-body">
+                    <div class="table-responsive">
+                        <table id="myTable" class="table table-hover thead-primary">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Addon Name</th>
+                                    <th scope="col">Addon Item</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    @*<th scope="col">AddOnId</th>
+                                        <th scope="col">AddItemId</th>*@
+                                    @*<th scope="col">Edit</th>*@
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Edit AddOn Items -->
+                <div class="modal fade" id="notesmodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-secondary">
+                                <h5 class="modal-title has-icon text-white" id="NoteModal">Edit AddOn</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="ms-panel-body">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom01">Addon Name</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="" name="AddonName" value="" readonly>
+                                                <div class="valid-feedback">Looks good!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Addon Item</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="" name="AddonItem" value="" readonly>
+                                                <div class="valid-feedback">Looks good!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom03">Price</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="" name="AddonPrice" value="">
+                                                <div class="valid-feedback">Looks good!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02"><b>Quatity</b></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="AddOnQuantity" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-4 mb-3" style="display:none">
+                                            <label for="validationCustom01">Addon ID</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="" name="AddonID" value="" readonly>
+                                                <div class="valid-feedback">Looks good!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3" style="display:none">
+                                            <label for="validationCustom02">Addon Item ID</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="" name="AddonItemID" value="" readonly>
+                                                <div class="valid-feedback">Looks good!</div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <button type="submit" id="submit" class="btn btn-primary trigger-swal" data-swal="positioned">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- View Create Addon Modal -->
+                <div class="modal fade" id="creatmodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-secondary">
+                                <h5 class="modal-title has-icon text-white" id="NoteModal">Crate Addon</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="ms-panel-body">
+                                <form class="needs-validation" novalidate>
+                                    <div class="form-row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01"><b>Addon Name</b></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="addOnName" id="addOnName" value="" required>
+                                                <div class="invalid-feedback">
+                                                    Enter Name!
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01"><b> addOn FoodType</b></label>
+                                            <div class="input-group">
+                                                <select name="addOnTitleFoodType" id="addOnTitleFoodType" class="form-control">
+                                                    <option value="true">VEG</option>
+                                                    <option value="false">NON-Veg</option>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Please select Food type.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01"><b>Type</b></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="type" id="type" value="addOn" readonly>
+                                                <div class="invalid-feedback">
+                                                    Enter Name!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary" id="createaddon" type="submit">Create</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- View Add Addon Item Modal -->
+                <div class="modal fade" id="additemsmodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-secondary">
+                                <h5 class="modal-title has-icon text-white" id="NoteModal">Add AddOn Items</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="ms-panel-body">
+                                <div class="form-row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="validationCustom02"><b>Select Addon</b></label>
+                                        <div class="input-group">
+                                            <select class="form-control" id="addonSelect">
+                                                <option value=" " id="chooseAddon">--Select--</option>
+                                            </select>
+                                        </div>
+                                        <form class="needs-validation" novalidate>
+                                            <div class="form-row">
+
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="validationCustom02"><b>AddOn Type</b></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="addSizeType" name="addSizeType" placeholder="" value=" " required>
+                                                        <div class="invalid-feedback">
+                                                            Enter Type!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="validationCustom02"><b>Amount</b></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="addSizeAmount" name="addSizeAmount" placeholder="" value=" " required>
+                                                        <div class="invalid-feedback">
+                                                            Enter Type!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="validationCustom02"><b>Quatity</b></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="addOnQuantity" name="addOnQuantity" value=" " required>
+                                                        <div class="invalid-feedback">
+                                                            Enter Type!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="validationCustom01"><b> addOn ItemType</b></label>
+                                                    <div class="input-group">
+                                                        <select name="addOnItemFoodType" id="addOnItemFoodType" class="form-control">
+                                                            <option value="true">VEG</option>
+                                                            <option value="false">NON-Veg</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            Please select Food type.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-3" style="display:none">
+                                                    <label for="validationCustom02"><b>type</b></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" name="createType" id="createType" value="addOn" required>
+                                                        <div class="invalid-feedback">
+                                                            Enter Type!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <button class="btn btn-primary mt-4 d-block w-50" type="submit" id="AddOn">Add AddOn</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*------------------------------------------------SELECTION PART-------------------------------------------------------------*@
+@*------------------------------------------------SELECTION PART-------------------------------------------------------*@
+<div class="ms-content-wrapper">
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="align-self-center align-left">
+                            <h6>Selections List</h6>
+                        </div>
+                        <div>
+                            <button type="button" id="createselectionmodel" class="btn btn-secondary">Create Selection</button>
+                            <button type="button" id="selectionitemsmodal" class="btn btn-secondary">Create Selection Items</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ms-panel-body">
+                    <div class="table-responsive">
+                        <table id="myTableselection" class="table table-hover thead-primary">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Selection Name</th>
+                                    <th scope="col">Selection Item</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    @*<th scope="col">AddOnId</th>
+                                        <th scope="col">AddItemId</th>*@
+                                    @*<th scope="col">Edit</th>*@
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Edit Selection Items -->
+                <div class="modal fade" id="notesmodalselection" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-secondary">
+                                <h5 class="modal-title has-icon text-white" id="NoteModal">Edit Selection</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="ms-panel-body">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom01">Selection Name</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="" name="SelectionName" value="" readonly>
+                                                <div class="valid-feedback">Looks good!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Selection Item</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="" name="SelectionItem" value="" readonly>
+                                                <div class="valid-feedback">Looks good!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom03">Price</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="" name="SelectionPrice" value="">
+                                                <div class="valid-feedback">Looks good!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02"><b>Quatity</b></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="SelectionQuantity" value="" required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-4 mb-3" style="display:none">
+                                            <label for="validationCustom01">Selection ID</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="" name="SelectionID" value="" readonly>
+                                                <div class="valid-feedback">Looks good!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3" style="display:none">
+                                            <label for="validationCustom02">Selection Item ID</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="" name="SelectionItemID" value="" readonly>
+                                                <div class="valid-feedback">Looks good!</div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <button type="submit" id="submitSelection" class="btn btn-primary trigger-swal" data-swal="positioned">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- View Create Selection Modal -->
+                <div class="modal fade" id="creatselectionmodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-secondary">
+                                <h5 class="modal-title has-icon text-white" id="NoteModal">Create Selection</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="ms-panel-body">
+                                <form class="needs-validation" novalidate>
+                                    <div class="form-row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01"><b>Selection Name</b></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="SelectionName" id="SelectionName" value="" required>
+                                                <div class="invalid-feedback">
+                                                    Enter Name!
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01"><b>Type</b></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="typeselection" id="typeselection" value="selection" readonly>
+                                                <div class="invalid-feedback">
+                                                    Enter Name!
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationCustom01"><b> Selection FoodType</b></label>
+                                            <div class="input-group">
+                                                <select name="selectionTitleFoodType" id="selectionTitleFoodType" class="form-control">
+                                                    <option value="true">VEG</option>
+                                                    <option value="false">NON-Veg</option>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Please select Food type.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary" id="createSelection" type="submit">Create</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- View Add Selection Item Modal -->
+                <div class="modal fade" id="electionitemmodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-secondary">
+                                <h5 class="modal-title has-icon text-white" id="NoteModal">Add Selection Items</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="ms-panel-body">
+                                <div class="form-row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="validationCustom02"><b>Select Selection</b></label>
+                                        <div class="input-group">
+                                            <select class="form-control" id="SelectionSelect">
+                                                <option value=" " id="chooseAddon">--Select--</option>
+                                            </select>
+                                        </div>
+                                        <form class="needs-validation" novalidate>
+                                            <div class="form-row">
+
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="validationCustom02"><b>Selection Type</b></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="addSelection" name="addSelection" placeholder="" value=" " required>
+                                                        <div class="invalid-feedback">
+                                                            Enter Type!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="validationCustom02"><b>Amount</b></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="addSelAmount" name="addSelAmount" placeholder="" value=" " required>
+                                                        <div class="invalid-feedback">
+                                                            Enter Type!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="validationCustom02"><b>Quatity</b></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="addSelQuantity" name="addSelQuantity" value=" " required>
+                                                        <div class="invalid-feedback">
+                                                            Enter Type!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="validationCustom01"><b> Selection ItemType</b></label>
+                                                    <div class="input-group">
+                                                        <select name="selectionItemFoodType" id="selectionItemFoodType" class="form-control">
+                                                            <option value="true">VEG</option>
+                                                            <option value="false">NON-Veg</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            Please select Food type.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 mb-3" style="display:none">
+                                                    <label for="validationCustom02"><b>type</b></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" name="selectionType" id="selectionType" value="selection" required>
+                                                        <div class="invalid-feedback">
+                                                            Enter Type!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <button class="btn btn-primary mt-4 d-block w-50" type="submit" id="selectionItem">Add Selection</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+
+
+<script>
+    /*  Modal Script*/
+    $("#editMenuitem").click(function () {
+        debugger;
+        $('#notesmodal').modal('show');
+    })
+
+    $("#createaddonmodal").click(function () {
+        debugger;
+        $('#creatmodal').modal('show');
+    })
+
+    $("#addonitemsmodal").click(function () {
+        debugger;
+        $('#additemsmodal').modal('show');
+    })
+
+ /*   API's Script Start Here*/
+    $(document).ready(function () {
+        var APIString = '@Model.Connectionstringalladdonitems';
+        $.get(APIString, function (res, status) {
+            console.log(res);
+            var data = res.list;
+            data.forEach(function (dt) {
+                console.log(dt);
+                if (dt.type === "addOn") {
+                    $("#myTable").append("<tr>" +
+                        "<td>" + dt.addOnTitle + "</td>" +
+                        "<td>" + dt.addOnName + "</td>" +
+                        "<td>" + dt.amount + "</td>" +
+                        "<td>" + dt.addOnQuantity + "</td>" +
+                        "<td  style='display: none' >" + dt.addOnTitleId + "</td>" +
+                        "<td style='display: none'>" + dt.addOnId + "</td>" +
+                        "<td style='display: none'>" + dt.addOn + "</td>" +
+                        /*"<td>" + dt.addOnName + "</td>" +*/
+                        "<td>" + `<a 'data-bs-toggle="tooltip" data-bs-placement="top"  title = "Edit!"' class="editMenuitem" onclick = "$('#notesmodal').modal('show')"><i class='fas fa-pencil-alt text-secondary'></i></a>
+                         <a 'data-bs-toggle="tooltip" data-bs-placement="top" title = "Delete!"' id="delete" ><i class='far fa-trash-alt ms-text-danger'></i></a>` + "</td>")
+                }
+            }
+            );
+        });
+    })
+</script>
+
+
+<script>
+    $(document).on("click", ".editMenuitem", function () {
+        debugger;
+        var id = $(this).closest('tr').attr('id');
+        var currentRow = $(this).closest("tr");
+        var AddonName = currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+        var AddonItem = currentRow.find("td:eq(1)").text();
+        var AddonPrice = currentRow.find("td:eq(2)").text();
+        var AddOnQuantity = currentRow.find("td:eq(3)").text();
+        var AddonTitleId = currentRow.find("td:eq(4)").text();
+        var AddonOnId = currentRow.find("td:eq(5)").text();
+
+        var modal = $("#notesmodal .modal-content");
+        modal.find('input[name=AddonName]').val(AddonName);
+        modal.find('input[name=AddonItem]').val(AddonItem);
+        modal.find('input[name=AddonPrice]').val(AddonPrice);
+        modal.find('input[name=AddOnQuantity]').val(AddOnQuantity);
+        modal.find('input[name=AddonID]').val(AddonTitleId);
+        modal.find('input[name=AddonItemID]').val(AddonOnId);
+
+        $(document).on('click', "#submit", function (e) {
+            e.preventDefault();
+            debugger;
+            var AddonID = $('input[name=AddonID]').val();
+            var AddonItemID = $('input[name=AddonItemID]').val();
+            var AddonPrice = $('input[name=AddonPrice]').val();
+            var AddonQuantity = $('input[name=AddOnQuantity]').val();
+            var APIString = '@Model.Connectionstringeditaddonitem';
+
+
+            $.ajax({
+                type: 'POST',
+                url: APIString,
+                data: JSON.stringify({
+                    addOnTitleId: AddonID.trim(),
+                    addOnId: AddonItemID.trim(),
+                    amount: AddonPrice.trim(),
+                    addOnQuantity: AddonQuantity.trim()
+
+                }),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                     debugger;
+                    if (data.status) {
+                        toastr.success(data.message);
+                        $('form :input').val('');
+                         window.setTimeout(function () {
+                            window.location.href='@Url.Action("AddOnList", "AddOn")'
+                        }, 0000);
+
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function (ajaxContext) {
+                    // toastr.success('Record saved', 'Success !!');
+                    alert("Fail");
+                }
+            });
+
+
+        })
+    });
+
+    $(document).on('click', "#delete", function () {
+        debugger;
+        var currentRow = $(this).closest("tr");
+        var AddonName = currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+        var AddonItem = currentRow.find("td:eq(1)").text();
+        var AddonPrice = currentRow.find("td:eq(2)").text();
+        var AddOnQuantity = currentRow.find("td:eq(3)").text();
+        var AddonTitleId = currentRow.find("td:eq(4)").text();
+        var AddonOnId = currentRow.find("td:eq(5)").text();
+
+        var modal = $("#notesmodal .modal-content");
+        modal.find('input[name=AddonName]').val(AddonName);
+        modal.find('input[name=AddonItem]').val(AddonItem);
+        modal.find('input[name=AddonPrice]').val(AddonPrice);
+        modal.find('input[name=AddOnQuantity]').val(AddOnQuantity);
+        modal.find('input[name=AddonID]').val(AddonTitleId);
+        modal.find('input[name=AddonItemID]').val(AddonOnId);
+        if (confirm(`Are you sure to delete this AddOn item ${AddonName} ?`)) {
+            var APIString = '@Model.Connectionstringdeleteaddonitem';
+            $.ajax({
+                type: 'POST',
+                url: APIString,
+                data: JSON.stringify({
+                    /*addOnId: AddonOnId,*/
+                    addOnTitleId: AddonTitleId,
+                }),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    debugger;
+                    if (data.status) {
+                        toastr.success(data.message);
+                        window.setTimeout(function () {
+                            window.location.href = '@Url.Action("AddOnList", "AddOn")'
+                        }, 0000);
+                    } else {
+                        toastr.error(data.message);
+                    }
+
+                },
+                error: function (ajaxContext) {
+                    // toastr.success('Record saved', 'Success !!');
+                    alert("Fail");
+                }
+            });
+        }
+    })
+</script>
+
+@*Script For Create AddON*@
+<script>
+     $(document).on("click", "#createaddon", function (e) {
+        debugger;
+         // for preventing browser refresh.
+          e.preventDefault();
+
+                  var APIString = '@Model.Connectionstringcreateaddonname';
+                var addOnNameValue = $('#addOnName').val();
+                var type = $('#type').val();
+         var addOntitleFoodType = $('#addOnTitleFoodType :selected').text();
+                 $.ajax({
+                     type: 'POST',
+                     url: APIString,
+                     data: JSON.stringify({
+                         addOnTitle: addOnNameValue.trim(),
+                         type: type,
+                         addOnTitleFoodType: addOntitleFoodType
+                     }),
+                     dataType: 'json',
+                     contentType: 'application/json',
+                     success: function (data) {
+                         if (data.status) {
+                             toastr.success(data.message);
+                             $('form :input').val('');
+                              window.setTimeout(function () {
+                              window.location.href='@Url.Action("AddOnList", "AddOn")'
+                              }, 2000);
+                              } else {
+                             toastr.error(data.message);
+                         }
+                     },
+                     //error: function (ajaxContext) {
+                     // toastr.error("Try After Sometime", 'Error');
+                     //}
+                 });
+             })
+</script>
+
+@*Add AddOns Script*@
+<script>
+    $(document).ready(function () {
+        var APIString = '@Model.Connectionstringgetaddonnames';
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            dataType: "json",
+            success: function (Result) {
+                debugger;
+                console.log(Result.list)
+                var addOnTitleResult = Result.list
+                var ele = document.getElementById('addonSelect');
+                var addOns = [];
+                for (var i = 0; i < addOnTitleResult.length; i++) {
+                    // POPULATE SELECT ELEMENT WITH JSON.
+                    if (addOnTitleResult[i].type === "addOn") {
+                        addOns.push(addOnTitleResult[i])
+                    ele.innerHTML = ele.innerHTML +
+                        '<option value="' + addOnTitleResult[i]['addOnTitleId'] + '">' + addOnTitleResult[i]['addOnTitle'] + '</option>';
+                   }
+                    }
+            },
+            error: function (Result) {
+                alert("Error or Error");
+            }
+        });
+    });
+
+</script>
+
+<script>
+    $("#AddOn").click(function (e) {
+        e.preventDefault();
+        debugger;
+          var APIString = '@Model.ConnectionstringcreateAddOnItems';
+        var addOnId = $('#addonSelect').val();
+        var addOnType = $('#addSizeType').val();
+        var amount = $('#addSizeAmount').val();
+        var quantity = $('#addOnQuantity').val();
+        var type = $('#createType').val();
+        var addOnItemFoodType = $('#addOnItemFoodType :selected').text();
+
+
+        debugger;
+        $.ajax({
+            type: 'POST',
+            url: APIString,
+            data: JSON.stringify({
+                addOnTitleId: addOnId,
+                addOnName: addOnType.trim(),
+                amount: amount.trim(),
+                addOnQuantity: quantity.trim(),
+                type: type,
+                addOnFoodType: addOnItemFoodType
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+
+                debugger;
+                if (data.status) {
+                    toastr.success(data.message);
+                    $('form :input').val('');
+                       window.setTimeout(function () {
+                            window.location.href='@Url.Action("AddOnList", "AddOn")'
+                        }, 1000);
+                } else {
+                    toastr.error(data.message);
+                }
+            },
+            //error: function (ajaxContext) {
+            //    debugger;
+            //    toastr.error("Try After Sometime", 'Error');
+            //}
+        });
+    })
+
+</script>
+
+@*/*-----------------------------------------------------SELECTION PART-----------------------------------------------------*/*@
+<script>
+    /*  Modal Script*/
+    $("#createselectionmodel").click(function () {
+        debugger;
+        $('#creatselectionmodal').modal('show');
+    })
+
+    $("#selectionitemsmodal").click(function () {
+        debugger;
+        $('#electionitemmodal').modal('show');
+    })
+</script>
+
+@*Script For Create Selection*@
+<script>
+        $(document).on("click", "#createSelection", function (e) {
+        debugger;
+         // for preventing browser refresh.
+          e.preventDefault();
+
+            var APIString = '@Model.Connectionstringcreateaddonname';
+            var addOnNameValue = $('#SelectionName').val();
+            var type = $('#typeselection').val();
+            var selectionTitleFoodType = $('#selectionTitleFoodType :selected').text();
+                 $.ajax({
+                     type: 'POST',
+                     url: APIString,
+                     data: JSON.stringify({
+                         addOnTitle: addOnNameValue.trim(),
+                         type: type,
+                         addOnTitleFoodType:selectionTitleFoodType
+                     }),
+                     dataType: 'json',
+                     contentType: 'application/json',
+                     success: function (data) {
+                         if (data.status) {
+                             toastr.success(data.message);
+                             $('form :input').val('');
+                              window.setTimeout(function () {
+                              window.location.href='@Url.Action("AddOnList", "AddOn")'
+                              }, 2000);
+                              } else {
+                             toastr.error(data.message);
+                         }
+                     },
+                     //error: function (ajaxContext) {
+                     // toastr.error("Try After Sometime", 'Error');
+                     //}
+                 });
+             })
+
+</script>
+
+@*Add AddOns Script*@
+<script>
+    $(document).ready(function () {
+        var APIString = '@Model.Connectionstringgetaddonnames';
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            dataType: "json",
+            success: function (Result) {
+                debugger;
+                console.log(Result.list)
+                var addOnTitleResult = Result.list
+                var ele = document.getElementById('SelectionSelect');
+                var addOns = [];
+                for (var i = 0; i < addOnTitleResult.length; i++) {
+                    // POPULATE SELECT ELEMENT WITH JSON.
+                    if (addOnTitleResult[i].type === "selection") {
+                        addOns.push(addOnTitleResult[i])
+                    ele.innerHTML = ele.innerHTML +
+                        '<option value="' + addOnTitleResult[i]['addOnTitleId'] + '">' + addOnTitleResult[i]['addOnTitle'] + '</option>';
+                   }
+                    }
+            },
+            error: function (Result) {
+                alert("Error or Error");
+            }
+        });
+    });
+</script>
+
+<script>
+    $("#selectionItem").click(function (e) {
+        e.preventDefault();
+        debugger;
+          var APIString = '@Model.ConnectionstringcreateAddOnItems';
+        var addOnId = $('#SelectionSelect').val();
+        var addOnType = $('#addSelection').val();
+        var amount = $('#addSelAmount').val();
+        var quantity = $('#addSelQuantity').val();
+        var type = $('#selectionType').val();
+        var selectionItemFoodType = $('#selectionItemFoodType :selected').text();
+
+
+        debugger;
+        $.ajax({
+            type: 'POST',
+            url: APIString,
+            data: JSON.stringify({
+                addOnTitleId: addOnId,
+                addOnName: addOnType.trim(),
+                amount: amount.trim(),
+                addOnQuantity: quantity.trim(),
+                type: type,
+                addOnFoodType:selectionItemFoodType
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+
+                debugger;
+                if (data.status) {
+                    toastr.success(data.message);
+                    $('form :input').val('');
+                       window.setTimeout(function () {
+                            window.location.href='@Url.Action("AddOnList", "AddOn")'
+                        }, 1000);
+                } else {
+                    toastr.error(data.message);
+                }
+            },
+            //error: function (ajaxContext) {
+            //    debugger;
+            //    toastr.error("Try After Sometime", 'Error');
+            //}
+        });
+    })
+
+     $(document).ready(function () {
+        var APIString = '@Model.Connectionstringalladdonitems';
+        $.get(APIString, function (res, status) {
+            console.log(res);
+            var data = res.list;
+            data.forEach(function (dt) {
+                console.log(dt);
+                if (dt.type === "selection") {
+                    $("#myTableselection").append("<tr>" +
+                        "<td>" + dt.addOnTitle + "</td>" +
+                        "<td>" + dt.addOnName + "</td>" +
+                        "<td>" + dt.amount + "</td>" +
+                        "<td>" + dt.addOnQuantity + "</td>" +
+                        "<td  style='display: none' >" + dt.addOnTitleId + "</td>" +
+                        "<td style='display: none'>" + dt.addOnId + "</td>" +
+                        "<td style='display: none'>" + dt.addOn + "</td>" +
+                        /*"<td>" + dt.addOnName + "</td>" +*/
+                        "<td>" + `<a 'data-bs-toggle="tooltip" data-bs-placement="top"  title = "Edit!"' class="editSelection" onclick = "$('#notesmodalselection').modal('show')"><i class='fas fa-pencil-alt text-secondary'></i></a>
+                         <a 'data-bs-toggle="tooltip" data-bs-placement="top" title = "Delete!"' id="deleteSelection" ><i class='far fa-trash-alt ms-text-danger'></i></a>` + "</td>")
+                }
+            }
+            );
+        });
+    })
+
+    $(document).on("click", ".editSelection", function () {
+        debugger;
+        var id = $(this).closest('tr').attr('id');
+        var currentRow = $(this).closest("tr");
+        var SelectionName = currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+        var SelectionItem = currentRow.find("td:eq(1)").text();
+        var SelectionPrice = currentRow.find("td:eq(2)").text();
+        var SelectionQuantity = currentRow.find("td:eq(3)").text();
+        var SelectionTitleId = currentRow.find("td:eq(4)").text();
+        var SelectionId = currentRow.find("td:eq(5)").text();
+
+        var modal = $("#notesmodalselection .modal-content");
+        modal.find('input[name=SelectionName]').val(SelectionName);
+        modal.find('input[name=SelectionItem]').val(SelectionItem);
+        modal.find('input[name=SelectionPrice]').val(SelectionPrice);
+        modal.find('input[name=SelectionQuantity]').val(SelectionQuantity);
+        modal.find('input[name=SelectionID]').val(SelectionTitleId);
+        modal.find('input[name= SelectionItemID]').val(SelectionId);
+
+        $(document).on('click', "#submitSelection", function (e) {
+            e.preventDefault();
+            debugger;
+            var SelectionID = $('input[name=SelectionID]').val();
+            var SelectionItemID = $('input[name= SelectionItemID]').val();
+            var SelectionPrice = $('input[name=SelectionPrice]').val();
+            var SelectionQuantity = $('input[name=SelectionQuantity]').val();
+            var APIString = '@Model.Connectionstringeditaddonitem';
+
+
+            $.ajax({
+                type: 'POST',
+                url: APIString,
+                data: JSON.stringify({
+                    addOnTitleId: SelectionID.trim(),
+                    addOnId: SelectionItemID.trim(),
+                    amount: SelectionPrice.trim(),
+                    addOnQuantity: SelectionQuantity.trim()
+
+                }),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                     debugger;
+                    if (data.status) {
+                        toastr.success(data.message);
+                        $('form :input').val('');
+                         window.setTimeout(function () {
+                            window.location.href='@Url.Action("AddOnList", "AddOn")'
+                        }, 2000);
+
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function (ajaxContext) {
+                    // toastr.success('Record saved', 'Success !!');
+                    alert("Fail");
+                }
+            });
+
+
+        })
+    });
+
+     $(document).on('click', "#deleteSelection", function () {
+        debugger;
+        var currentRow = $(this).closest("tr");
+        var SelectionName = currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+         var SelectionItem = currentRow.find("td:eq(1)").text();
+         var SelectionPrice = currentRow.find("td:eq(2)").text();
+         var SelectionQuantity = currentRow.find("td:eq(3)").text();
+         var SelectionTitleId = currentRow.find("td:eq(4)").text();
+         var SelectionId = currentRow.find("td:eq(5)").text();
+
+         var modal = $("#notesmodalselection .modal-content");
+         modal.find('input[name=SelectionName]').val(SelectionName);
+         modal.find('input[name=SelectionItem]').val(SelectionItem);
+         modal.find('input[name=SelectionPrice]').val(SelectionPrice);
+         modal.find('input[name=SelectionQuantity]').val(SelectionQuantity);
+         modal.find('input[name=SelectionID]').val(SelectionTitleId);
+         modal.find('input[name=SelectionItemID]').val(SelectionId);
+         if (confirm(`Are you sure to delete this Selection item ${SelectionName} ?`)) {
+            var APIString = '@Model.Connectionstringdeleteaddonitem';
+            $.ajax({
+                type: 'POST',
+                url: APIString,
+                data: JSON.stringify({
+                    /*addOnId: AddonOnId,*/
+                    addOnTitleId: SelectionID,
+                }),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    debugger;
+                    if (data.status) {
+                        toastr.success(data.message);
+                        window.setTimeout(function () {
+                            window.location.href = '@Url.Action("AddOnList", "AddOn")'
+                        }, 0000);
+                    } else {
+                        toastr.error(data.message);
+                    }
+
+                },
+                error: function (ajaxContext) {
+                    // toastr.success('Record saved', 'Success !!');
+                    alert("Fail");
+                }
+            });
+        }
+    })
+
+</script>
+
+

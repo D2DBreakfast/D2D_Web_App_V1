@@ -1,0 +1,819 @@
+﻿@model D2D.WebApp.ViewModel.FoodMenuVM
+
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewData["Title"] = "ImageSave";
+}
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Menu</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Menu List</li>
+                </ol>
+            </nav>
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="align-self-center align-left">
+                            <h6>Menu List</h6>
+                        </div>
+                        <button type="button" id="addnewmenu" class="btn btn-primary">Add Menu</button>
+                    </div>
+                </div>
+
+                @*   where  is  jquery for button click *@
+                @*  Iam asking jquery  i got it. i add it now. i remove my old changes.i do it and update*@
+
+                <div class="ms-panel-body">
+                    <div class="table-responsive">
+                        <table id="myTable" class="table table-hover thead-primary">
+                            <thead>
+                                <tr>
+                                    <th scope="col">item Name</th>
+                                    <th scope="col">Main Category</th>
+                                    <th scope="col">Sub Category</th>
+                                    <th scope="col">Food Type</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col"> Price</th>
+                                    @*<th scope="col"> AddOns</th>*@
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- create menu  Modal -->
+<div class="modal fade" id="notesmodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 60%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title has-icon text-white" id="NoteModal">Add Menu Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="ms-panel-body">
+                <form class="needs-validation clearfix" autocomplete="off" enctype="multipart/form-data">
+                    <div class="form-row">
+
+                        <div class="col-md-6 mb-3">
+                            <!-- <label for="vali/dationCustom18">Item Name</label> -->
+                            <label for="validationCustom12"><b>Item Names</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="itemName" id="itemName">
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom22"><b>Main Category</b></label>
+                            <div class="input-group">
+                                <select class="form-control" id="subcat" name="itemMainCategoryName">
+                                    <option name="itemMainCategoryName" id="itemMainCategoryName">Select Main Category</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select Sub Catagory.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom12"><b>Sub Catagory</b></label>
+                            <div class="input-group">
+                                <select class="form-control" id="subval" value="itemSubCategoryName">
+                                    <option value="itemSubCategoryName" id="itemSubCategoryName" name="itemSubCategoryName">Select Sub Category</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please provide a message.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <select name="itemFoodType" id="itemFoodType" class="form-control">
+                                    <option value="true">VEG</option>
+                                    <option value="false">NON-Veg</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select Food type.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom18" id="fullNameValidationError"><b>Quantity</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="itemQuantity" name="itemQuantity">
+                                <div class="valid-feedback">
+                                    Nice Quantity!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom18" id="fullNameValidationError"><b>Price</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="itemPrice" name="itemPrice">
+                                <div class="valid-feedback">
+                                    Good Price!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12 mb-3">
+                                <label for="validationCustom12"><b>Select AddOns / Selections</b></label>
+                                <div class="form-row addOnCheckboxs">
+                                    <div class="col-md-12 mb-3">
+                                        <div class="form-check">
+                                            <div class="containeraddon" val="" id="addOnid"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label for="validationCustom12"><b>Upload Item Image</b></label>
+                            <div class="custom-file">
+                                <div class="custom-file">
+                                    <input class="form-control" name="files" type="file" id="fileUpload" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="validationCustom12"><b>Allergy Note</b></label>
+                            <div class="input-group">
+                                <p rows="3" id="agNote" readonly> GF - Gluten free / D - Contains diary / N - Contains Nuts / SS -sea same seed / SO- soya / V - vegetarian / S spicy.</p>
+                                <div class="invalid-feedback">
+                                    Please provide a message.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="validationCustom12"><b>Description</b></label>
+                            <div class="input-group">
+                                <textarea rows="5" id="itemDescription" name="itemDescription" class="form-control"
+                                          placeholder="Message"></textarea>
+                                <div class="invalid-feedback">
+                                    Please provide a message.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <button type="submit" id="submit" class="btn btn-primary">Add To Menu</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- View table Modal -->
+<div class="modal fade" id="viewmodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title has-icon text-white" id="NoteModal">View Items</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="ms-panel-body">
+                <div class="table-responsive">
+                    <table class="myTableview table table-hover thead-primary">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 40px"> AddOns</th>
+                                <th scope="col" style="width: 40px">Discrption</th>
+                                <th scope="col" style="width: 30px;">Image</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Update menu  Modal -->
+<div class="modal fade" id="updatemodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 60%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title has-icon text-white" id="NoteModal">Update Menu Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="ms-panel-body">
+                <form class="needs-validation clearfix" autocomplete="off" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <!-- <label for="vali/dationCustom18">Item Name</label> -->
+                            <label for="validationCustom12">Item Names</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="itemName" id="itemName" value=" " readonly>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom22">Main Category</label>
+                            <div class="input-group">
+                                <select class="form-control" id="subcat" name="itemMainCategoryName">
+                                    <option name="itemMainCategoryName" id="itemMainCategoryName">Select Main Category</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select Sub Catagory.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom12">Sub Catagory</label>
+                            <div class="input-group">
+                                <select class="form-control" id="subval" value="itemSubCategoryName">
+                                    <option value="itemSubCategoryName" id="itemSubCategoryName" name="itemSubCategoryName">
+                                        Select
+                                        Sub Category
+                                    </option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please provide a message.
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-md-6 mb-3">
+                                <label for="validationCustom22">Food Type</label>
+                                <div class="input-group">
+                                    <select name="itemFoodType" id="itemFoodType" class="form-control">
+                                        <option value="veg">Veg</option>
+                                        <option value="nonveg">Non Veg</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select Food type.
+                                    </div>
+                                </div>
+                            </div>*@
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom18" id="fullNameValidationError">Quantity</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="itemQuantity" name="itemQuantity" value="">
+                                <div class="valid-feedback">
+                                    Nice Quantity!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="validationCustom18" id="fullNameValidationError">Price</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="itemPrice" name="itemPrice" value="">
+                                <div class="valid-feedback">
+                                    Good Price!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="validationCustom12"><b>Select AddOns/Selections</b></label>
+                            <div class="form-row addOnCheckboxs">
+                                <div class="col-md-12 mb-3">
+                                    <div class="form-check">
+                                        <div class="modalcontaineraddon" id="addOnid"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="validationCustom12">Update Menu Image</label>
+                            <div class="input-group">
+                                <img src="" alt="" name="itemImageUrl" width="200" height="300" style="display: block; margin-left: auto; margin-right: auto; max-width: 65px; border-radius: 50%;">
+                                <input class="form-control" name="files" type="file" id="updatefileUpload" />
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    @*<div class="col-md-12 mb-3">
+                          <label for="validationCustom12">Allergy Note</label>
+                          <div class="input-group">
+                         <textarea rows="3" id="Note"  name="Note" placeholder="GF - Gluten free / D - Contains diary / N - Contains Nuts / SS -sea same seed / SO- soya / V - vegetarian / S spicy.
+                         " value="GF - Gluten free / D- Contains diary / N-Contains Nuts / SS -sea same seed / SO- soya / V-vegetarian / S spicy" class="form-control" readonly required></textarea>
+                          <div class="invalid-feedback">
+                          Please provide a message.
+                          </div>
+                          </div>
+                        </div>*@
+                    @*<div class="col-md-12 mb-3">
+                         <label for="validationCustom12">Description</label>
+                         <div class="input-group">
+                         <textarea rows="5" id="itemDescription" name="itemDescription" class="form-control"
+                         placeholder="Message"></textarea>
+                        <div class="invalid-feedback">
+                        Please provide a message.
+                          </div>
+                        </div>
+                        </div>*@
+
+                    <input type='hidden' name='itemId' value=''>
+                    <input type='hidden' name='mainCategoryId' value=''>
+                    <input type='hidden' name='subCategoryId' value=''>
+                    <input type='hidden' name='addontitleid' value=''>
+                    <input type='hidden' name='addonid' value=''>
+                    <input type='hidden' name='status' value=''>
+                    <input type='hidden' name='addOnTitle' value=''>
+                    <div class="col-md-12 mb-3">
+                        <button type="submit" id="updatesubmit" class="btn btn-primary">Update Menu</button>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+@*<script src="~/assets/js/sweet-alerts.js"></script>
+    <script src="~/assets/js/sweetalert2.min.js"></script>*@
+
+
+<script>
+    $("#addnewmenu").click(function () {
+        debugger;
+        $('#notesmodal').modal('show');
+    })
+
+
+    $(document).ready(function () {
+        var APIString = '@Model.ConnectionstringfetchMenudashboard';
+        $.get(APIString, function (list, status) {
+            console.log("list", list.menuList);
+            var menuList = list.menuList;
+            $("#myTable tbody").html("");
+            if (menuList) {
+                menuList.forEach(function (dt) {
+                    var addOnDet = dt.items;
+                    var addontitle = "";
+                    addOnDet.forEach(function (il) {
+                        console.log("il", il)
+                        addontitle = addontitle + il.addOnTitle + "</br>"
+                    })
+                    $("#myTable").append("<tr>" +
+                        "<td>" + dt.itemName + "</td>" +
+                        "<td>" + addOnDet[0].itemMainCategoryName + "</td>" +
+                        "<td>" + addOnDet[0].itemSubCategoryName + "</td>" +
+                        "<td>" + addOnDet[0].itemFoodType + "</td>" +
+                        "<td>" + addOnDet[0].itemQuantity + "</td>" +
+                        "<td>" + addOnDet[0].itemPrice + "</td>" +
+                        /*"<td>" + addontitle + "</td>" +*/
+                        "<input type='hidden' name='itemId' value='" + addOnDet[0].itemId + "'>" +
+                        "<input type='hidden' name='mainCategoryId' value='" + addOnDet[0].mainCategoryId + "'>" +
+                        "<input type='hidden' name='subCategoryId' value='" + addOnDet[0].subCategoryId + "'>" +
+                        "<td>" + `<a class = "view" data-addontitle="${addontitle}" data-description="${addOnDet[0].itemDescription}" data-image="${addOnDet[0].itemImageUrl}"  onclick= $('#viewmodal').modal('show')><i class="fa fa-eye  text-secondary text-success"></i></a>
+                          <a id = "editMenuitem"><i class='fas fa-pencil-alt text-secondary'></i></a>
+                          <a  id="delete"><i class='far fa-trash-alt ms-text-danger'></i></a>` + "</td>")
+                })
+            }
+        });
+
+
+    });
+</script>
+
+@*view Menu Items*@
+<script>
+
+    $(document).on("click", "a.view", function (e) {
+        var addOntit = $(this).closest('tr').find('.view').data('addontitle');
+        var description = $(this).closest('tr').find('.view').data('description');
+        var itemImage = $(this).closest('tr').find('.view').data('image');
+
+        $("#viewmodal .modal-content .myTableview tbody").html('');
+        $("#viewmodal .modal-content .myTableview tbody").append("<td>" + addOntit + "</td>");
+        $("#viewmodal .modal-content .myTableview tbody").append("<td>" + description + "</td>");
+        $("#viewmodal .modal-content .myTableview tbody").append("<td>" + '<img src="' + itemImage + '">' + "</td>");
+
+
+    });
+</script>
+
+@*this is for Add Menu Code.*@
+
+<script>
+    $("#submit").click(function (e) {
+        e.preventDefault();
+        var result;
+        debugger;
+        var itemname = $('#itemName').val();
+        var itemQuantity = $('#itemQuantity').val();
+        var itemPrice = $('#itemPrice').val();
+        var itemDescription = $('#itemDescription').val();
+        var itemMainCategoryId = $('#subcat').val();
+        var itemSubCategoryId = $('#subval').val();
+        var allergyNotes = $('#agNote').text( );
+        var addOnId = $('.containeraddon input[type="checkbox"]');
+        var addOnIds = [];
+        /*var addOnIdjson = {};*/
+        addOnId.each(function (i, v) {
+            var addontitle = $(this).siblings('label')[i];
+            var type = addontitle.dataset.type;
+              var addOnIdjson = {
+                addOns: {
+                    addOnTitleId: $(this).val(),
+                      addOnTitle: addontitle.textContent,
+                      type: type,
+                      status: status = $(this).is(':checked')
+                },
+            };
+             addOnIds.push(addOnIdjson.addOns);
+        });
+
+
+        console.log("addOnIds", addOnIds.length)
+
+        var itemMainCategoryName = $('#subcat :selected').text();
+        var itemSubCategoryName = $('#subval :selected').text();
+        var itemFoodType = $('#itemFoodType :selected').text();
+        var files = document.getElementById("fileUpload").files[0].name;
+       /* alert(files);*/
+        //data = new FormData();
+        //data.append("files", files[0]);
+        var upload_imgae = "https://d2drestmanager.azurewebsites.net/images/" + files;
+
+        debugger;
+
+         var APIString = '@Model.Connectionstringaddmenu ';
+        debugger;
+        $.ajax({
+            type: 'POST',
+            url: APIString,
+            data: JSON.stringify({
+
+                itemName: itemname,
+                itemMainCategoryId: itemMainCategoryId,
+                itemMainCategoryName: itemMainCategoryName,
+                itemSubCategoryId: itemSubCategoryId,
+                itemSubCategoryName: itemSubCategoryName,
+                itemFoodType: itemFoodType,
+                itemQuantity: itemQuantity,
+                itemPrice: itemPrice,
+                allergyNote: allergyNotes,
+                addOnTitleIds: addOnIds,
+                itemImageUrl: upload_imgae,
+                itemDescription: itemDescription
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                debugger;
+                if (data.status) {
+                    toastr.success(data.message);
+                    $('form :input').val('');
+                    window.setTimeout(function () {
+                        $('#notesmodal').modal('hide')
+                            window.location.href='@Url.Action("MenuList", "FoodMenu")'
+                        }, 1000);
+                } else {
+                    toastr.error(data.message);
+
+                }
+            },
+            //error: function (ajaxContext) {
+            //     toastr.success('Record saved', 'Success !!');
+            //    alert("Fail");
+            //}
+        });
+    })
+
+    //Adding image to controller
+    $("#submit").click(function (e) {
+        debugger;
+        var files = $('#fileUpload').prop("files");
+        formData = new FormData();
+        formData.append("files", files[0]);
+        $.ajax({
+            type: 'POST',
+            url: "/FoodMenu/ImageSave",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                debugger
+            }
+        });
+    })
+
+    $("#subcat").on('change', function () {
+        debugger;
+        var getValue = $(this).val();
+        var ele = document.getElementById('subval');
+        ele.innerHTML = "";
+        var APIString = '@Model.ConnectionstringfetchSubCategory ';
+        debugger;
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: APIString,
+            data: JSON.stringify({ mainCategoryId: getValue }),
+            dataType: "json",
+            success: function (Result) {
+                debugger;
+                console.log(Result.subCategoryData)
+                getValue = "";
+                for (var i = 0; i < Result.SubCategoryData.length; i++) {
+                    // POPULATE SELECT ELEMENT WITH JSON.
+                    ele.innerHTML = ele.innerHTML +
+                        '<option value="' + Result.SubCategoryData[i]['subCategoryId'] + '">' + Result.SubCategoryData[i]['subCategoryName'] + '</option>';
+                }
+
+            },
+            error: function (Result) {
+                console.log(Result)
+                alert(Result);
+            }
+        });
+    });
+    $(document).ready(function () {
+       var APIString = '@Model.Connectionstringfetchmaincategory';
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            data: "{}",
+            dataType: "json",
+            success: function (Result) {
+
+                $.each(Result.d, function (key, value) {
+
+                    console.log(value)
+                    $("#MainCategoryName").append($("<option></option>").val(value.mainCategoryId).html(value.subCategoryName));
+                });
+                console.log(Result.MainCategoryData)
+                var ele = document.getElementById('subcat');
+                for (var i = 0; i < Result.MainCategoryData.length; i++) {
+                    // POPULATE SELECT ELEMENT WITH JSON.
+                    ele.innerHTML = ele.innerHTML +
+                        '<option value="' + Result.MainCategoryData[i]['mainCategoryId'] + '">' + Result.MainCategoryData[i]['mainCategoryName'] + '</option>';
+                }
+            },
+            error: function (Result) {
+                alert("Error or Error");
+            }
+        });
+    });
+
+
+
+    //update Menu Items
+    $(document).on("click", "#editMenuitem", function (e) {
+        debugger;
+        var id = $(this).closest('tr').attr('id');
+        var currentRow = $(this).closest("tr");
+        var itemName = currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+        var MainCategoryName = currentRow.find("td:eq(1)").text(); // get current row 2nd TD
+        var itemSubCategoryName = currentRow.find('td:eq(2)').text().trim();
+        //var itemFoodType = currentRow.find('td:eq(3)').text().trim();
+        var itemQuantity = currentRow.find('td:eq(4)').text().trim();
+        var itemPrice = currentRow.find('td:eq(5)').text().trim();
+        var addOnCheckboxs = currentRow.find('td:eq(6) .view').data('addontitle').split("</br>")
+
+
+
+        var itemId = currentRow.find("input[name=itemId]").val();
+        var mainCategoryId = currentRow.find("input[name=mainCategoryId]").val();
+        var subCategoryId = currentRow.find("input[name=subCategoryId]").val();
+        var itemImage = $(this).closest('tr').find('.view').data('image');
+
+
+        $("#updatemodal .modal-content #itemName").val(itemName);
+        $("#updatemodal .modal-content #itemMainCategoryName").text(MainCategoryName);
+        $("#updatemodal .modal-content #itemSubCategoryName").text(itemSubCategoryName);
+        var addOnId = $('.modalcontaineraddon input[type="checkbox"]');
+        var addOnIds = [];
+        /*var addOnIdjson = {};*/
+        addOnId.each(function (i, v) {
+            $(this).attr("checked", false);
+            var addontitle = $(this).siblings('label')[i];
+            var type = addontitle.dataset.type;
+            var r = addOnCheckboxs.includes(addontitle.textContent);
+            if (addOnCheckboxs.includes(addontitle.textContent)) {
+                $(this).attr("checked", true);
+                var addOnIdjson = {
+                    addOns: {
+                        addOnTitleId: $(this).val(),
+                        addOnTitle: addontitle.textContent,
+                        type: type,
+                        status: status = $(this).is(':checked')
+                    },
+                };
+                addOnIds.push(addOnIdjson.addOns);
+            }
+
+        });
+
+
+
+
+        // $("#updatemodal .modal-content select .itemFoodType option").text(itemFoodType);
+        $("#updatemodal .modal-content #itemQuantity").val(itemQuantity);
+        $("#updatemodal .modal-content #itemPrice").val(itemPrice);
+        $("#updatemodal .modal-content").find("input[name = itemId]").val(itemId);
+        $("#updatemodal .modal-content").find("input[name = subCategoryId]").val(subCategoryId);
+        $("#updatemodal .modal-content").find("input[name = mainCategoryId]").val(mainCategoryId);
+        $("#updatemodal .modal-content img").attr("src", itemImage);
+
+        $('#updatemodal').modal('show');
+    });
+
+    $('#updatesubmit').on('click', function (e) {
+        e.preventDefault();
+        debugger;
+
+        var itemQuantity = $('#updatemodal .modal-content #itemQuantity').val();
+        var itemPrice = $('#updatemodal .modal-content #itemPrice').val();
+        /* var itemDescription = $('#itemDescription').val();*/
+        var itemId = $("#updatemodal .modal-content").find("input[name = itemId]").val();
+        var SubCategoryId = $("#updatemodal .modal-content").find("input[name = subCategoryId]").val();
+        var MainCategoryId = $("#updatemodal .modal-content").find("input[name = mainCategoryId]").val();
+        var addOnId = $("#updatemodal .modal-content").find('.modalcontaineraddon input[type="checkbox"]');
+        var files = document.getElementById("updatefileUpload").files[0];
+        if (files != undefined) {
+            var upload_image = "https://d2drestmanager.azurewebsites.net/images/" + files.name;
+        }
+        var addOnIds = [];
+        /*var addOnIdjson = {};*/
+        addOnId.each(function (i, v) {
+            var addontitle = $(this).siblings('label')[i];
+            var addOnIdjson = {
+                addOns: {
+                    addOnTitleId: $(this).val(),
+                    addOnTitle: addontitle.textContent,
+                    status: status = $(this).is(':checked')
+                },
+            };
+            addOnIds.push(addOnIdjson.addOns);
+        });
+
+        var APIString = '@Model.Connectionstringeditmenudetails';
+        $.ajax({
+
+            type: 'POST',
+            url: APIString,
+            data: JSON.stringify({
+                itemId: itemId,
+                mainCategoryId: MainCategoryId,
+                subCategoryId: SubCategoryId,
+                itemQuantity: itemQuantity,
+                itemPrice: itemPrice,
+                addOnTitleIds: addOnIds,
+                itemImageUrl: upload_image
+
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                debugger;
+                if (data.status) {
+                    toastr.success(data.message);
+                    $('#updatemodal').modal('hide');
+                    window.setTimeout(function () {
+                            window.location.href = '@Url.Action("MenuList", "FoodMenu")'
+                        }, 2000);
+                } else {
+                    toastr.error(data.message);
+                }
+
+            },
+            error: function (ajaxContext) {
+
+                alert("Fail");
+            }
+            });
+    })
+
+    //update image to controller
+    $("#updatesubmit").click(function (e) {
+        debugger;
+        var files = $('#updatefileUpload').prop("files");
+        formData = new FormData();
+        formData.append("files", files[0]);
+        $.ajax({
+            type: 'POST',
+            url: "/FoodMenu/ImageSave",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                debugger
+            }
+        });
+    })
+
+    //Get add on names to check box
+    $(document).ready(function () {
+        var APIString = '@Model.ConnectionstringgetAddOnNames';
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            data: "{}",
+            dataType: "json",
+            success: function (Result, status)  {
+                console.log("addonListtttttttttttttt", Result.list);
+                var list = Result.list;
+                for (var value of list) {
+                    debugger;
+                    $('.containeraddon,.modalcontaineraddon')
+                        .append(`<input type="checkbox" value="${value.addOnTitleId}" id="addOnId" value="${value.addOnTitle}" value="${value.status}" value="${value.type}">`)
+                        .append(`<label for="${value.addOnTitle}" data-type="${value.type}">${value.addOnTitle}</label></div>`)
+                        .append(`<br>`);
+                }
+
+            },
+
+        });
+    });
+
+
+
+      //Deleting Menu Item
+    $(document).on("click", "#delete", function (e) {
+        e.preventDefault();
+        debugger;
+        var currentRow = $(this).closest("tr");
+        var mainCategoryID = currentRow.find("input[name = mainCategoryId]").val();
+        var subCategoryID = currentRow.find("input[name = subCategoryId]").val();
+        var itemId = currentRow.find("input[name = itemId]").val();
+       /* var itemname = currentRow.find("input[name = itemName]").val();*/
+        var itemName = currentRow.find("td:eq(0)").text();
+        if (confirm(`Are you sure to delete this item ${itemName} ?`)) {
+            var APIString = '@Model.ConnectionstringdeleteMenuItem';
+            $.ajax({
+                type: 'POST',
+                url: APIString,
+                data: JSON.stringify({
+                    mainCategoryId: mainCategoryID,
+                    subCategoryId: subCategoryID,
+                    itemId: itemId,
+                }),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+
+                    debugger;
+                    if (data.status) {
+                        toastr.success(data.message)
+                          window.setTimeout(function () {
+                            window.location.href = '@Url.Action("MenuList", "FoodMenu")'
+                        }, 2000);
+
+
+                    } else {
+                        toastr.error(data.message)
+                    }
+                },
+
+            });
+        }
+
+    })
+
+
+
+</script>
+
+
+

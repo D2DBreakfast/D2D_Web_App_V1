@@ -1,0 +1,91 @@
+﻿@model D2D.WebApp.ViewModel.AddSubscriptionVM
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+
+
+
+
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Menu</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Subscription Orders</li>
+                </ol>
+            </nav>
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="align-self-center align-left">
+                            <h6>SUBSCRIPTION ORDERS LIST</h6>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="ms-panel-body">
+                    <div class="table-responsive">
+                        <table id="myTable" class="table table-hover thead-primary">
+                            <thead>
+                                <tr>
+                                    <th scope="col">User Name</th>
+                                    <th scope="col">Mobile Number</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Subscription Plan</th>
+                                    <th scope="col">Subscription Title</th>
+                                    <th scope="col">Start Date</th>
+                                    <th scope="col">End Date</th>
+                                    <th scope="col">Payment Mode</th>
+                                    <th scope="col">orderDate</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+
+<script>
+   
+   
+    /*Add subscription Script*/
+     /* Table List*/
+    $(document).ready(function () {
+        var APIString = '@Model.Connectionstringfetchsubscriptiondetails';
+        $.get(APIString, function (subscriptionDet) {
+            //console.log("mylist", SubscriptionPlans);
+            var subscriptionList = subscriptionDet.SubscriptionPlans;
+            subscriptionList.forEach(function (list) {
+                $("#myTable").append("<tr>" +
+                         "<td>" + list.userName + "</td>" +
+                         "<td>" + list.mobileNo + "</td>" +
+                         "<td>" + list.amount + "</td>" +
+                         "<td>" + list.plan + "</td>" +
+                          "<td>" + list.planName + "</td>" +
+                         // "<td>" + list.subscriptionTitle + "</td>" +
+                         "<td>" + list.subscriptionStartDate + "</td>" +
+                         "<td>" + list.subscriptionEndDate + "</td>" +
+                          "<td>" + list.paymentMethod + "</td>" +
+                          "<td>" + list.orderDate + "</td>" +
+                    "<td class='badge badge-secondary'>" + list.status +  "</td>")
+                })
+            })
+
+        });
+    
+   
+
+</script>

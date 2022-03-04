@@ -1,0 +1,406 @@
+﻿@model D2D.WebApp.ViewModel.deliveryVM
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@*Modal to Add Delivery Boy*@
+<div class="modal fade" id="adddeliveryboymodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title has-icon text-white" id="NoteModal">Add Delivery Boy</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="ms-panel-body">
+                <form class="needs-validation" novalidate autocomplete="off">
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom01">Full Name</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control deliveryboyname" id="validationCustom01" value=" " required>
+                                <div class="invalid-feedback">
+                                    Enter Name!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom02">Phone Number</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control deliveryboynumber" id="validationCustom02" value=" " required>
+                                <div class="invalid-feedback">
+                                    Enter Number!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom03">Email Address</label>
+                            <div class="input-group">
+                                <input type="email" class="form-control deliveryboyemail"  value=" " required>
+                                <div class="invalid-feedback">
+                                    Please provide a valid email.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom04">UAE ID Number</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control deliveryboyid" value=" " required>
+                                <div class="invalid-feedback">
+                                    provide UID Number.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom03">Sector ID</label>
+                            <div class="input-group">
+                                <input type="email" class="form-control sectorid" value=" " required>
+
+                                <div class="invalid-feedback">
+                                    Please provide a valid email.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom04">Manager ID</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control managerid" value=" " required>
+                                <div class="invalid-feedback">
+                                    provide UID Number.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            @*<label for="validationCustom06">Address</label>
+                 <div class="input-group">
+                    <textarea rows="5" id="validationCustom12" class="form-control deliveryboyaddress" placeholder="Address" value=" "  required></textarea>
+                        <div class="invalid-feedback">
+                           Please provide a Address.
+                         </div>
+                </div>*@
+                            @*<label for="validationCustom05">Sector ID</label>
+                <div class="input-group">
+                    <input type="text" class="form-control sectorid" value=" " required>
+                    <div class="invalid-feedback">
+                        provide UID Number.
+                    </div>
+                </div>*@
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="addDboyDetail" type="submit">Registor Delivery Boy </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Modal to Edit Delivery Boy*@
+<div class="modal fade" id="editdeliveryboymodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title has-icon text-white" id="NoteModal">Edit Delivery Boy Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="ms-panel-body">
+                <form class="needs-validation" novalidate>
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom01">Full Name</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control editdeliveryboyname" value=" " readonly>
+                                <div class="invalid-feedback">
+                                    Enter Name!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom02">Phone Number</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control editdeliveryboynumber" value=" " required>
+                                <div class="invalid-feedback">
+                                    Enter Number!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom03">Email Address</label>
+                            <div class="input-group">
+                                <input type="email" class="form-control editdeliveryboyemail" value=" " required>
+
+                                <div class="invalid-feedback">
+                                    Please provide a valid email.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom04">UAE ID Number</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control editdeliveryboyuaeid" value=" " readonly>
+                                <div class="invalid-feedback">
+                                    provide UID Number.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+
+
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            @*<label for="validationCustom06">Address</label>
+                 <div class="input-group">
+                    <textarea rows="5" id="validationCustom12" class="form-control deliveryboyaddress" placeholder="Address" value=" "  required></textarea>
+                        <div class="invalid-feedback">
+                           Please provide a Address.
+                         </div>
+                </div>*@
+                            @*<label for="validationCustom05">Sector ID</label>
+                <div class="input-group">
+                    <input type="text" class="form-control sectorid" value=" " required>
+                    <div class="invalid-feedback">
+                        provide UID Number.
+                    </div>
+                </div>*@
+                        </div>
+                    </div>
+                    <input type='hidden' name='editdeliveryboyid' class='editdeliveryboyid' value=''>
+                    <button class="btn btn-primary" id="editaddDboyDetail" type="submit">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Menu</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Delivery Boys List</li>
+                </ol>
+            </nav>
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="align-self-center align-left">
+                            <h6>Delivery Boys List</h6>
+                        </div>
+                        <div>
+                            
+                            <button type="button" id="adddeliveryboy" class="btn btn-primary">Add Delivery Boy</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="ms-panel-body">
+                    <div class="table-responsive">
+                        <table id="myTable" class="table table-hover thead-primary">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Number</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">UAE ID</th>
+                                    <th scope="col" style = 'display:none'>ID </th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+
+<script>
+    /*  Modal Script*/
+    $("#adddeliveryboy").click(function () {
+        debugger;
+        $('#adddeliveryboymodal').modal('show');
+    })
+    $("#editdeliveryboy").click(function () {
+        debugger;
+        $('#editdeliveryboymodal').modal('show');
+    })
+
+   //Sending Delivery Boys Details
+    $("#addDboyDetail").click(function (e) {
+        e.preventDefault();
+        debugger;
+        var deliveryboyname = $('.deliveryboyname').val();
+        var phonenumber = $('.deliveryboynumber').val();
+        var emailid = $('.deliveryboyemail').val();
+        var uaeid = $('.deliveryboyid').val();
+        var sectorid = $('.sectorid').val();
+        var managerid = $('.managerid').val();
+        /* var sectorid = $('.sectorid').val();*/
+
+
+        var APIString = '@Model.ConnectionstringaddDeliveryBoy';
+        debugger;
+        $.ajax({
+            type: 'POST',
+            url: APIString,
+            data: JSON.stringify({
+                fullName: deliveryboyname.trim(),
+                email: emailid.trim(),
+                mobileNo: phonenumber.trim(),
+                //sectorId: sectorid,
+                emiratesId: uaeid.trim(),
+                sectorId: sectorid.trim(),
+                managerId: managerid.trim(),
+            /*    deliveryBoyId:*/
+
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.status) {
+                    toastr.success(data.message);
+                    $('form :input').val('');
+                    window.setTimeout(function () {
+                        window.location.href = '@Url.Action("AddDeliveryBoy", "Delivery")'
+                    }, 2000);
+                    $('#adddeliveryboymodal').modal('hide');
+
+                } else {
+                    toastr.error(data.message);
+                }
+            },
+            error: function (ajaxContext) {
+                // toastr.success('Record saved', 'Success !!');
+                alert("Fail");
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        var APIString = '@Model.Connectionstringalldeliveryboyslist';
+        debugger;
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            data: "{}",
+            dataType: "json",
+            success: function (res, status) {
+                debugger;
+                console.log("myres", res);
+                var data = res.list;
+                data.forEach(function (dt) {
+
+                    $("#myTable").append("<tr>" +
+                        "<td>" + dt.userName + "</td>" +
+                        "<td>" + dt.mobileNo + "</td>" +
+                        "<td>" + dt.email + "</td>" +
+                        "<td>" + dt.emiratesId + "</td>" +
+                        "<td style = 'display:none'>" + dt.deliveryBoyId + "</td>" +
+                        "<td>" + `<a id="editdeliveryboy" 'data-bs-toggle="tooltip" data-bs-placement="top"  title = "Edit!"' onclick= $('#editdeliveryboymodal').modal('show')><i class='fas fa-pencil-alt text-secondary'></i></a>
+                         <a 'data-bs-toggle="tooltip" data-bs-placement="top" title = "Delete!"' id="delete" ><i class='far fa-trash-alt ms-text-danger'></i></a>` + "</td>")
+                })
+            },
+            error: function (Result) {
+                alert("Error");
+            }
+        });
+    });
+
+    //update Delivery boy list
+    $(document).on("click", "#editdeliveryboy", function (e) {
+        debugger;
+        var id = $(this).closest('tr').attr('id');
+        var currentRow = $(this).closest("tr");
+        var boyName = currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+        var number = currentRow.find("td:eq(1)").text(); // get current row 2nd TD
+        var email = currentRow.find('td:eq(2)').text();
+        var id = currentRow.find('td:eq(3)').text();
+        var deliveryboyid = currentRow.find('td:eq(4)').text();
+
+        $("#editdeliveryboymodal .modal-content .editdeliveryboyname").val(boyName);
+        $("#editdeliveryboymodal .modal-content .editdeliveryboynumber").val(number);
+        $("#editdeliveryboymodal .modal-content .editdeliveryboyemail").val(email);
+        $("#editdeliveryboymodal .modal-content .editdeliveryboyuaeid").val(id);
+        $("#editdeliveryboymodal .modal-content .editdeliveryboyid").val(deliveryboyid);
+    });
+
+    $('#editaddDboyDetail').on('click', function (e) {
+        e.preventDefault();
+        debugger;
+
+        var editname = $("#editdeliveryboymodal .modal-content .editdeliveryboyname").val();
+        var editnumber = $("#editdeliveryboymodal .modal-content .editdeliveryboynumber").val();
+        var editemail = $("#editdeliveryboymodal .modal-content .editdeliveryboyemail").val();
+        var edituaeid = $("#editdeliveryboymodal .modal-content .editdeliveryboyuaeid").val();
+        var editid = $("#editdeliveryboymodal .modal-content .editdeliveryboyid").val();
+
+
+        var APIString = '@Model.Connectionstringaeditdeliveryboydetails';
+        $.ajax({
+
+            type: 'POST',
+            url: APIString,
+            data: JSON.stringify({
+                fullName: editname.trim(),
+                mobileNo: editnumber.trim(),
+                email: editemail.trim(),
+                deliveryBoyId: editid.trim()
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                debugger;
+                if (data.status) {
+                    toastr.success(data.message);
+                     window.setTimeout(function () {
+                    window.location.href='@Url.Action("AddDeliveryBoy", "Delivery")'
+                     }, 1000);
+
+
+                } else {
+                    toastr.error(data.message);
+                }
+
+            },
+            error: function (ajaxContext) {
+
+                alert("Fail");
+            }
+            });
+          })
+
+
+</script>
+
+

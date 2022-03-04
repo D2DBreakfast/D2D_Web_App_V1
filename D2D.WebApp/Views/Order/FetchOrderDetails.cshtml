@@ -1,0 +1,218 @@
+﻿@model D2D.WebApp.ViewModel.OrderListVM
+
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<style>
+    hr.dashed {
+        border-top: 3px dashed #bbb;
+    }
+
+    #importantId {
+        background-color: red;
+    }
+</style>
+
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Menu</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Alacarte Orders</li>
+                </ol>
+            </nav>
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <h6> ALACARTE ORDER LIST</h6>
+                </div>
+                <div class="ms-panel-body">
+                    <div class="table-responsive">
+                        <table id="myTable" class="table table-hover thead-primary" data-toolbar="#toolbar" data-toggle="table" data-maintain-meta-data="true">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Order Id</th>
+                                    <th scope="col">Customer Name</th>
+                                    <th scope="col">Number</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Payment Mode</th>
+                                    <th scope="col">Order Status</th>
+                                    <th scope="col">Date</th>
+                                   
+                                    <th scope="col">Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View table Modal -->
+<div class="modal fade" id="viewmodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 90%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title has-icon text-white" id="NoteModal">View Items</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="ms-panel-body">
+                <div class="table-responsive">
+                    <table class="myTableview table table-hover thead-primary">
+                        <thead>
+                            <tr style="width: 10px;">
+                                <th scope="col" style="width:10px"> Item Name</th>
+                                <th scope="col"style="width:10px">Quantity</th>
+                                <th scope="col" style="width:10px">Selections</th>
+                                <th scope="col" style="width:10px">AddOns</th>
+                                <th scope="col" style="width:10px">Address</th>
+                                <th scope="col"style="width:10px">Sector Name</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                        
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+
+<script>
+    $("#view").click(function () {
+        debugger;
+        $('#viewmodal').modal('show');
+    })
+
+    $(document).ready(function () {
+        var APIString = '@Model.Connectionstringdayorderhistory';
+        $.post(APIString, function (orderList,status) {
+            console.log("orderList", orderList.list);
+            var listArray = orderList.list;
+            $("#myTableview tbody").html(" ");
+            if (listArray) {
+                listArray.forEach(function (dt) {
+                    var orderItems = dt.orderDetails;
+                    var itemName = "";
+                    var itemBaseQuantity = "";
+                    var landMark = "";
+                    var sectorId = "";
+                    var selections = '';
+                    var addonJSON = [];
+                    var selectionJSON = [];
+                    
+                    address = dt.address;
+                    sectorId = dt.sectorId;
+                    console.log("orderItems", orderItems);
+                    orderItems.forEach(function (il) {
+                        console.log("il", il)
+                        itemName = itemName + il.itemName + "</br>" + "</br>";
+                        itemBaseQuantity = itemBaseQuantity + il.itemBaseQuantity + "</br>" + "</br>";
+                        var addOnlist = il.addOnsList;
+                        var addOns = '';
+                       
+
+                        var count = 0;
+                        if (addOnlist.length > 0) {
+                            console.log("addonlist",addOnlist);
+                            addOnlist.forEach(function (al) {
+                                count++;
+                               
+                                console.log("foreach", al);
+                                if (al.type == "addOn") {
+                                    addOns = count < addOnlist.length ? addOns + al.addOnName + "," : addOns + al.addOnName + "</br>" + "</br>";
+                                    //console.log("hjwjkafhjwfh", addOns);
+                                    //console.log("myaddons", addOns.substring(addOns.indexOf(',')));
+                                  /*  addOns.split(",").join("<br />");*/
+                                    /* addOns.replace(/,/g, '<br>');*/
+                                }  
+                            });
+                        }
+                        var selections = '';
+
+                        var count = 0;
+                        if (addOnlist.length > 0) {
+                            console.log("addonlist", addOnlist);
+                            addOnlist.forEach(function (bl) {
+                                count++;
+
+                                console.log("foreach", bl);
+                                if (bl.type == "selection") {
+
+                                    //selections = selections + al.addOnName + ", ";
+                                    //selections + "</br>";
+                                    selections = count < addOnlist.length ? selections + bl.addOnName + ", " : selections + bl.addOnName + "</br>" + "</br>" + "</br>" ;
+                                }
+                            });
+                        }
+                       
+                        addonJSON.push(addOns);
+                        selectionJSON.push(selections);
+                        /* "<hr> </hr>"*/   /* "<hr class='dashed'>"*/   
+                       
+                    });
+                        $("#myTable").append("<tr>" +
+                            "<td>" + dt.orderId + "</td>" +
+                            "<td style='display: none'>" + dt.userId + "</td>" +
+                            "<td>" + dt.userName + "</td>" +
+                            "<td>" + dt.mobileNo + "</td>" +
+                            "<td>" + dt.paymentPaid + "</td>" +
+                            "<td>" + dt.paymentMethod + "</td>" +
+                            "<td style='display: none'>" + dt.paymentStatus + "</td>" +
+                            "<td>" + dt.orderStatus + "</td>" +
+                            "<td style='display: none'>" + dt.deliveryStatus + "</td>" +    
+                            "<td>" + dt.orderDate + "</td>" +
+                            "<td style='display: none'>" + dt.villa + "</td>" +
+                            "<td>" + `<a id = "view" data-itemName="${itemName}" data-quantity="${itemBaseQuantity}" data-villa="${address}"  data-sectorid="${sectorId}" data-addons='${JSON.stringify(addonJSON)}' data-selections='${JSON.stringify(selectionJSON)}' onclick= $('#viewmodal').modal('show')><i class="fa fa-eye  text-secondary text-success"></i></a>
+                          ` + "</td>")
+                    
+                });
+            }
+        });
+    });
+
+    //view Menu Items
+    $(document).on("click", "#view", function (e) {
+        debugger;
+        var itemNames = $(this).data('itemname');
+        var quantity = $(this).data('quantity');
+        var villa = $(this).data('villa');
+        var sectorId = $(this).data('sectorid');
+        var addons = $(this).data('addons');
+        var selections = $(this).data('selections');
+        
+       
+
+     /*   var itemBaseQuantity = $(this).closest('tr').find('#view').data-quantity('innerOrderList.itemBaseQuantity');*/
+
+        $("#viewmodal .modal-content .myTableview tbody").html('');
+        $("#viewmodal .modal-content .myTableview tbody").append("<td>" + itemNames + "</td>");
+        $("#viewmodal .modal-content .myTableview tbody").append("<td>" + quantity + "</td>");
+        $("#viewmodal .modal-content .myTableview tbody").append("<td>" +  selections + "</td>");
+        $("#viewmodal .modal-content .myTableview tbody").append("<td>" + addons + "</td>");
+        $("#viewmodal .modal-content .myTableview tbody").append("<td>" + villa + "</td>");
+        $("#viewmodal .modal-content .myTableview tbody").append("<td>" + sectorId + "</td>");
+  
+
+
+
+       
+        //$("#viewmodal .modal-content .myTableview tbody").append("<td>" + itemBaseQuantity + "</td>");
+        //$("#viewmodal .modal-content .myTableview tbody").append("<td>" + "image" + "</td>");
+    });
+
+</script>

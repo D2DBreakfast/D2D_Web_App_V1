@@ -1,0 +1,66 @@
+﻿@model D2D.WebApp.ViewModel.RegisteredUsersVM
+
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Users List</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-xl-12 col-md-12">
+            <div class="ms-panel ms-panel-fh">
+                <div class="ms-panel-header">
+                    <h6>Users List</h6>
+                </div>
+                <div class="ms-panel-body">
+                    <div class="table-responsive">
+                        <table id="myTable1" class="table table-hover thead-primary">
+                            <thead>
+                                <tr>
+                                    <th scope="col">User Id</th>
+                                    <th scope="col">User Name</th>
+                                    <th scope="col">Number</th>
+                                    <th scope="col">Email</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+       var APIString = '@Model.ConnectionstringallRegUsers';
+        $.get(APIString, function (users, status) {
+            console.log("usersssssssssssss", users);
+            users.list.forEach(function (dt) {
+                $("#myTable1").append("<tr>" +
+                    "<td>" + dt.userId + "</td>" +
+                    "<td>" + dt.userName + "</td>" +
+                    /*"<td>" + dt.countryCode + "</td>" +*/
+                    "<td>" + dt.countryCode + - + dt.mobileNo + "</td>" +
+                    "<td>" + dt.email + "</td>")
+            });
+        });
+
+    })
+
+</script>

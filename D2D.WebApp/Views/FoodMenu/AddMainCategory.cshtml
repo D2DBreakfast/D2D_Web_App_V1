@@ -1,0 +1,92 @@
+﻿@model D2D.WebApp.ViewModel.FoodMenuVM
+
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Menu</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add Category</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="col-xl-12 col-md-12">
+            <div class="ms-panel ms-panel-fh">
+                <div class="ms-panel-header">
+                    <h6>Add Category Here</h6>
+                </div>
+                <div class="ms-panel-body">
+                    <form class="needs-validation" novalidate name="form" autocomplete="off" onsubmit="return test()" >
+                        <div class="form-row">
+                            <div class="col-md-12 mb-3">
+                                <label for="validationCustom12">Add Main Category</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control mainCategoryName" name="mainCategoryName"  pattern="[A-Za-z]" />
+                                    @*<div class="invalid-tooltip">
+                                        Please provide a message.
+                                    </div>*@
+                                    <span id="check" class="text-danger"> </span>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <button id="addmaincategory" type="submit" class="btn btn-primary">Add Main Category</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+
+<script>
+    function test() {
+        var maincatagery = document.getElementsByClassName('.mainCategoryName').value;
+        if (maincatagery == "") {
+            var maincatagery = document.getElementById('#check').innerHTML = "***";
+            return false;
+        }
+
+
+    }
+             $(document).on("click", "#addmaincategory", function (e) {
+             debugger;
+                 // for preventing browser refresh.
+                 e.preventDefault();
+
+                 var APIString = '@Model.Connectionstringaddmanincategory';
+                 var mainCategoryValue = $('.mainCategoryName').val();
+                 $.ajax({
+                     type: 'POST',
+                     url: APIString,
+                     data: JSON.stringify({
+                         mainCategoryName: mainCategoryValue
+                     }),
+                     dataType: 'json',
+                     contentType: 'application/json',
+                     success: function (data) {
+                         if (data.status) {
+                             toastr.success(data.message);
+                              window.setTimeout(function () {
+                            window.location.href = '@Url.Action("AddMainCategory", "FoodMenu")'
+                        }, 2000);
+                             $('form :input').val('');
+                         } else {
+                             toastr.error(data.message);
+                         }
+                     },
+
+                 });
+
+             })
+
+</script>

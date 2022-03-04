@@ -1,0 +1,257 @@
+﻿@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@*<div class="ms-content-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb pl-0">
+                        <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Menu</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Add Subscription</li>
+                    </ol>
+                </nav>
+                <div class="ms-panel">
+                    <div class="ms-panel-header">
+                        <div class="d-flex justify-content-between">
+                            <div class="align-self-center align-left">
+                                <h6>Add Subscription</h6>
+                            </div>
+                            <button type="button" id="addSubscription" class="btn btn-primary">Add Subscription</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+@*Subscription Menu Model
+    <div class="modal fade" id="notesmodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-secondary">
+                    <h5 class="modal-title has-icon text-white" id="NoteModal">Add Subscription</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="ms-panel-body">
+                    <div class="ms-panel-body">
+                        <form class="needs-validation clearfix" method="post" name="form" autocomplete="off">
+                            <div class="form-row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="validationCustom12">Subscripton Name</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="SubscriptionName" id="SubscriptionName" value=" " required>
+                                        <div class="invalid-feedback">
+                                            Please provide a message.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <button id="addSubscriptionName" class="btn btn-primary  ">Add Subscripton</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Menu</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add Subscription Details</li>
+                </ol>
+            </nav>
+            <div class="col-xl-12 col-md-12">
+                <div class="ms-panel ms-panel-fh">
+                    <div class="ms-panel-header">
+                        <h6>Add Details</h6>
+                    </div>
+                    <div class="ms-panel-body">
+                        <form class="needs-validation clearfix" autocomplete="off">
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="input-group">
+                                        <label for="validationCustom22">Main Subscription</label>
+                                        <div class="input-group">
+                                            <textarea style=" height: 38px;background: #ffffff" id="Note" name="Note" placeholder="Subscription" value="Subscription" class="form-control" readonly></textarea>
+                                            <div class="invalid-feedback">
+                                                Please provide a message.
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="input-group">
+                                        <label for="validationCustom02">Subscription Name</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="SubSubscriptionName" name="SubSubscriptionName " value=" " required>
+                                            <div class="invalid-feedback">
+                                                Enter!
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="validationCustom03">Amount</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="SubAmount" name="SubAmount" value=" " required>
+                                        <div class="invalid-feedback">
+                                            Enter!
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="validationCustom12">Package Image</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="validatedCustomFile">
+                                        <label class="custom-file-label" for="validatedCustomFile">Upload Image...</label>
+                                        <div class="invalid-feedback">Example invalid custom file feedback</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="validationCustom12">Description</label>
+                                    <div class="input-group">
+                                        <textarea rows="5" id="SubDescription" name="SubDescription" class="form-control"
+                                                  placeholder="Message"></textarea>
+                                        <div class="invalid-feedback">
+                                            Please provide a message.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <button id="AddDetails" class="btn btn-primary">Add Details</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+
+<script>
+    //Create Subscription Name
+    //$(document).on("click", "#addSubscriptionName", function () {
+    //    debugger;
+    //    var APIString = 'http://localhost:3000/manager/createSubscription';
+    //    var SubscriptionNameValue = $('#SubscriptionName').val();
+
+    //    $.ajax({
+    //        type: 'POST',
+    //        url: APIString,
+    //        data: JSON.stringify({
+    //            subscriptionName: SubscriptionNameValue
+    //        }),
+    //        dataType: 'json',
+    //        contentType: 'application/json',
+    //        success: function (data) {
+    //            $('#SubscriptionName').val('');
+    //            toastr.success("SubscriptionName Saved Sucessfully", 'Sucess');
+    //        },
+    //        error: function (ajaxContext) {
+    //            toastr.error("Try After Sometime", 'Error');
+    //        }
+    //    });
+
+    //})
+
+    //Adding Subscription List
+    //$(document).ready(function () {
+    //    var APIString = 'http://10.12.14.56:3000/manager/fetchSubscriptions';
+    //    $.ajax({
+    //        type: "GET",
+    //        contentType: "application/json",
+    //        url: APIString,
+    //        data: "{}",
+    //        dataType: "json",
+    //        success: function (Result) {
+    //            debugger;
+    //            //$.each(Result.d, function (key, value) {
+    //            //    debugger;
+    //            //    console.log(value)
+    //            //    $("#SelMainCat").append($("<option></option>").val(value.mainCategoryId).html(value.subCategoryName));
+    //            //});
+    //            console.log(Result.mainCategoryData)
+    //            var ele = document.getElementById('SubCatList');
+    //            for (var i = 0; i < Result.mainCategoryData.length; i++) {
+    //                // POPULATE SELECT ELEMENT WITH JSON.
+    //                ele.innerHTML = ele.innerHTML +
+    //                    '<option value="' + Result.mainCategoryData[i]['subscriptionId'] + '">' + Result.mainCategoryData[i]['subscriptionName'] + '</option>';
+    //            }
+    //        },
+    //        error: function (Result) {
+    //            alert("Error or Error");
+    //        }
+    //    });
+    //});
+
+    // Modal Event
+    //$("#addSubscription").click(function () {
+    //    debugger;
+    //    $('#notesmodal').modal('show');
+
+    //})
+
+    //Send All Details
+    $("#AddDetails").click(function (e) {
+        e.preventDefault();
+        debugger;
+         var APIString = '@Model.Connectionstringcreatesubscription';
+        // var mainSubscription = $('#SubCatList :selected').text();
+       /* var subscriptionId = $('#SubCatList').val();*/
+        var subscriptioname = $('#SubSubscriptionName').val();
+        var subscriptionleastamount = $('#SubAmount').val();
+        var subscriptiondescription = $('#SubDescription').val();
+        var subscriptionimage = "ImageURL";
+
+        debugger;
+        $.ajax({
+            type: 'POST',
+            url: APIString,
+            data: JSON.stringify({
+                /*subscriptionId: subscriptionId,*/
+                subscriptionType: subscriptioname.trim(),
+                subscriptionDescription: subscriptiondescription.trim(),
+                subscriptionLeastAmount: subscriptionleastamount.trim(),
+                subscriptionImage: subscriptionimage
+
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+
+                debugger;
+                if (data.status) {
+                    toastr.success(data.message);
+                } else {
+                    toastr.error(data.message);
+                }
+            },
+            //error: function (ajaxContext) {
+            //    debugger;
+            //    toastr.error("Try After Sometime", 'Error');
+            //}
+        });
+    })
+</script>

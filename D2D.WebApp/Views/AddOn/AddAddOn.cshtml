@@ -1,0 +1,317 @@
+﻿@model D2D.WebApp.ViewModel.AddOnsVM
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add Addons</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-xl-12 col-md-12">
+            <div class="ms-panel ms-panel-fh">
+                <div class="ms-panel-header">
+                    <h6>Add Addons</h6>
+                </div>
+                <div class="ms-panel-body">
+
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                            <div class="input-group">
+                                <select class="form-control" id="addonSelect">
+                                    <option value=" " id="chooseAddon">--Select--</option>
+                                </select>
+                            </div>
+                            <form class="needs-validation" novalidate>
+                                <div class="form-row">
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="validationCustom02">AddOn Type</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="addSizeType" name="addSizeType" placeholder="" value=" " required>
+                                            <div class="invalid-feedback">
+                                                Enter Type!
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="validationCustom02">Amount</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="addSizeAmount" name="addSizeAmount" placeholder="" value=" " required>
+                                            <div class="invalid-feedback">
+                                                Enter Type!
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                            @*<div class="form-row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="validationCustom02">Size Type2</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                            <div class="invalid-feedback">
+                                                Enter Type!
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="validationCustom02">Amount</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                            <div class="invalid-feedback">
+                                                Enter Type!
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            <button class="btn btn-primary mt-4 d-block w-50" type="submit" id="AddOn">Add AddOn</button>
+
+                            @*<div class="green box">
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Egg Type1</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Amount</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Egg Type2</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Amount</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Egg Type3</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Amount</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Egg Type4</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Amount</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary mt-4 d-block w-50" type="submit">Add AddOn</button>
+                                </div>*@
+                            @*<div class="blue box">
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Bread Type1</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Amount</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Bread Type2</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Amount</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Bread Type3</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Amount</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Bread Type4</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom02">Amount</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="validationCustom02" placeholder="phone number" value=" " required>
+                                                <div class="invalid-feedback">
+                                                    Enter Type!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary mt-4 d-block w-50" type="submit">Add AddOn</button>
+                                </div>*@
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+       /* var APIString = 'http://10.12.14.56:3000/manager/getAddOnNames';*/
+         var APIString = '@Model.Connectionstringgetaddonnames';
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            dataType: "json",
+            success: function (Result) {
+                debugger;
+                console.log(Result.list)
+                var ele = document.getElementById('addonSelect');
+                for (var i = 0; i < Result.list.length; i++) {
+                    // POPULATE SELECT ELEMENT WITH JSON.
+                    ele.innerHTML = ele.innerHTML +
+                        '<option value="' + Result.list[i]['addOnId'] + '">' + Result.list[i]['addOnName'] + '</option>';
+                }
+            },
+            error: function (Result) {
+                alert("Error or Error");
+            }
+        });
+    });
+
+</script>
+
+<script>
+    $("#AddOn").click(function (e) {
+        e.preventDefault();
+        debugger;
+         var APIString = '@Model.ConnectionstringcreateAddOnItems';
+        var addOnId = $('#addonSelect').val();
+        var addOnType = $('#addSizeType').val();
+        var amount = $('#addSizeAmount').val();
+
+        debugger;
+        $.ajax({
+            type: 'POST',
+            url: APIString,
+            data: JSON.stringify({
+                addOnId: addOnId,
+                addOnType: addOnType.trim(),
+                amount: amount.trim()
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+
+                debugger;
+                if (data.status) {
+                    toastr.success(data.message);
+                    $('form :input').val('');
+                } else {
+                    toastr.error(data.message);
+                }
+            },
+            //error: function (ajaxContext) {
+            //    debugger;
+            //    toastr.error("Try After Sometime", 'Error');
+            //}
+        });
+    })
+</script>

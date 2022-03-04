@@ -1,0 +1,728 @@
+﻿@model D2D.WebApp.ViewModel.NeedtocookVM
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<style>
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 30%;
+        height: 34px;
+    }
+
+        .switch input {
+            display: none;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ca2222;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: #2ab934;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(315px);
+        -ms-transform: translateX(315px);
+        transform: translateX(315px);
+    }
+
+    /*------ ADDED CSS ---------*/
+    .on {
+        display: none;
+    }
+
+    .on, .off {
+        color: white;
+        position: absolute;
+        transform: translate(-50%,-50%);
+        top: 50%;
+        left: 50%;
+        font-size: 15px;
+        font-family: Verdana, sans-serif;
+    }
+
+    input:checked + .slider .on {
+        display: block;
+    }
+
+    input:checked + .slider .off {
+        display: none;
+    }
+
+    /*--------- END --------*/
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+</style>
+
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Need To Cook</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="col-xl-12 col-md-12">
+            <div class="ms-panel ms-panel-fh">
+                <div class="ms-panel-header">
+                    <h6>Need to Cook Items List</h6>
+                </div>
+                <div class="ms-panel-body clearfix">
+                    <ul class="nav nav-tabs d-flex nav-justified mb-4" role="tablist">
+                        <li role="presentation"><a href="#tab13" aria-controls="tab13" class="active" role="tab" data-toggle="tab">Alacarte Orders</a></li>
+                        <li role="presentation"><a href="#tab14" aria-controls="tab14" role="tab" data-toggle="tab">Subcription Orders </a></li>
+
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active show fade in" id="tab13">
+                            <div class="table-responsive">
+                                <table id="needtocook" class="table table-hover thead-primary">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Item ID</th>
+                                            <th scope="col">Item Name</th>
+                                            <th scope="col">Total Quantity</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12 col-md-12">
+                                    <div class="ms-panel ms-panel-fh">
+                                        <div class="ms-panel-body clearfix">
+                                            <div class="tab-content">
+                                                <div class="table-responsive">
+                                                    <table id="addOnslist" class="table table-hover thead-primary">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Addon Name</th>
+                                                                <th scope="col">Total Quantity</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="tab14">
+                            <div class="table-responsive">
+                                <table id="needtocooksub" class="table table-hover thead-primary">
+                                    <thead>
+                                        <tr>
+
+                                            <th scope="col">Subscription Type</th>
+                                            <th scope="col">Item Name </th>
+                                            <th scope="col">Total Quantity </th>
+                                            <th scope="col" style="display:none">Day</th>
+                                            <th scope="col" style="display:none">Subscription Id</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*AddOns List Table*@
+@*<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Recived addons List</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="col-xl-12 col-md-12">
+            <div class="ms-panel ms-panel-fh">
+                <div class="ms-panel-header">
+                    <h6>addons Items List</h6>
+                </div>
+                <div class="ms-panel-body clearfix">     
+                    <div class="tab-content"> 
+                            <div class="table-responsive">
+                                <table id="addOnslist" class="table table-hover thead-primary">
+                                    <thead>
+                                        <tr>
+                                            
+                                        
+                                            <th scope="col">Addon Name</th>
+                                            <th scope="col">Total Quantity</th>
+                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+@*Modal to Edit Alacarte Orders Food status*@
+<div class="modal fade" id="editfoodstatusmodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title has-icon text-white" id="NoteModal">Edit Food Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="ms-panel-body">
+                <form class="needs-validation" novalidate>
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom01">Item ID</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control readitemid" value=" " readonly>
+                                <div class="invalid-feedback">
+                                    Enter Name!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom01">Item Name</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control readitemname" value=" " readonly>
+                                <div class="invalid-feedback">
+                                    Enter Name!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom02">Quantity</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control readquantity" value=" " readonly>
+                                <div class="invalid-feedback">
+                                    Enter Number!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                            <label for="validationCustom22"><b>Change Status</b></label>
+                            <div class="input-group">
+                                <label class="switch">
+                                    <input type="checkbox" id="togBtn">
+                                    <div class="slider round">
+                                        <!--ADDED HTML -->
+                                        <span class="off">Received</span>
+                                        <span class="on">Prepared</span>
+                                        <!--END-->
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="editstatus" type="submit">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Modal to View AddOns and Selections*@
+<div class="modal fade" id="viewAddonsModel" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title has-icon text-white" id="NoteModal">Item Selections</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="ms-panel-body">
+                <div class="table-responsive">
+                    <table id="selections" class="table table-hover thead-primary">
+                        <thead>
+                            <tr>
+                                <th scope="col">Selection</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Type</th>
+                                
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Modal to Edit Subscription Orders Food status*@
+<div class="modal fade" id="editfoodsubscriptionstatusmodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title has-icon text-white" id="NoteModal">Edit Subscription Food Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="ms-panel-body">
+                <form class="needs-validation" novalidate>
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom01">Subscription Name</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control readitemname" value=" " readonly>
+                                <div class="invalid-feedback">
+                                    Enter Name!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom02">Meal Name</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control readmeal" value=" " readonly>
+                                <div class="invalid-feedback">
+                                    Enter Number!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom02">Quantity</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control readquantity" value=" " readonly>
+                                <div class="invalid-feedback">
+                                    Enter Number!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3" style="display:none">
+                            <label for="validationCustom02">Day</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control readsubday" value=" " readonly>
+                                <div class="invalid-feedback">
+                                    Enter Number!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3" style="display:none">
+                            <label for="validationCustom02">Subscription ID</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control readsubid" value=" " readonly>
+                                <div class="invalid-feedback">
+                                    Enter Number!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="form-row">
+                            <div class="col-md-12 mb-3">
+                                <label for="validationCustom22"><b>Change Status</b></label>
+                                <div class="input-group">
+                                    <select name="changestatussubscription" id="changestatussubscription" class="form-control">
+                                        <option value="Prepared">Prepared</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select Food type.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                            <label for="validationCustom22"><b>Change Status</b></label>
+                            <div class="input-group">
+                                <label class="switch">
+                                    <input type="checkbox" id="togBtnSub">
+                                    <div class="slider round">
+                                        <!--ADDED HTML -->
+                                        <span class="off">Received</span>
+                                        <span class="on">Prepared</span>
+                                        <!--END-->
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="editstatussubscription" type="submit">Update</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+
+<script>
+    //Modal Script
+    $("#editfoodstatus").click(function () {
+        debugger;
+        $('#editfoodstatusmodal').modal('show');
+    })
+
+    $("#editsubsstatus").click(function () {
+        debugger;
+        $('#editfoodsubscriptionstatusmodal').modal('show');
+    })
+
+    // Need to cook for Alacarte
+    $(document).ready(function () {
+        var APIString = '@Model.Connectionstringneedtocook';
+        debugger;
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            data: "{}",
+            dataType: "json",
+            success: function (needtocook, status) {
+                console.log("needtocookkkkkkkkk", needtocook)
+                debugger;
+                var data = needtocook.orders;
+                if (data) {
+                    data.forEach(function (dt) {
+
+                        var itemName = "";
+                        var itemBaseQuantity = "";
+                        var itemStatus = "";
+                        var itemId = "";
+                        itemName = itemName + dt.itemName;
+
+                            $("#needtocook").append("<tr>" +
+                                "<td>" + dt.itemId + "</td>" +
+                                "<td>" + itemName + "</td>" +
+                                "<td >" + dt.itemBaseQuantity + "</td>" +
+                                "<td style ='color: green;  font-size: 18px;  font-weight: bold;'>" +dt.itemStatus + "</td>" +
+                                "<td>" + `<a id="editfoodstatus" 'data-bs-toggle="tooltip" data-bs-placement="top"  title = "Edit!"' onclick= $('#editfoodstatusmodal').modal('show')><i class='fas fa-pencil-alt text-secondary'></i></a>
+                                             <a id = "viewbutton"  'data-bs-toggle="tooltip" data-bs-placement="top"  title = "View!"' onclick= $('#viewAddonsModel').modal('show')><i class="fa fa-eye  text-secondary text-success"></i></a>` + "</td>")
+
+                    })
+                }
+            },
+            error: function (Result) {
+                alert("Error or Error");
+            }
+        });
+    });
+
+
+
+    //From View to Send Item Id
+    $(document).on('click', "#viewbutton", this.onclick = null, function (e) {
+        e.preventDefault();
+        var currentRow = $(this).closest("tr");
+        var itemId = currentRow.find("td:eq(0)").text();
+         var APIString = '@Model.Connectionstringneedtocookaddonselection';
+           $.ajax({
+            type: 'POST',
+            url: APIString,
+            data: JSON.stringify({
+                itemId: itemId
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                debugger;
+              /*  SelectionCount = [];*/
+                if (data.status) {
+                   var SelectionCount = [];
+                       // SelectionCount.length = 0
+                    /*toastr.success(data.message);*/
+                     SelectionCount = data.SelectionCount;
+
+                    SelectionCount.forEach(function (dt) {
+                        $("#selections").append("<tr>" +
+                            "<td>" + dt.addOnName + "</td>" +
+                            "<td>" + dt.addOnBaseQuantity + "</td>" +
+                            "<td >" + dt.type + "</td>" )
+                    });
+                    @*window.setTimeout(function () {
+                            window.location.href = '@Url.Action("ChefOder", "Chef")';
+                        }, 9000);*@
+
+                    $('#viewAddonsModel').on('hidden.bs.modal', function () {
+                       window.location.href = '@Url.Action("ChefOder", "Chef")';
+                    });
+
+                } else {
+                    toastr.error(data.message);
+                }
+
+            },
+            error: function (ajaxContext) {
+
+                alert(" its Fail");
+            }
+        });
+    });
+
+
+
+    //to send alacarte status change
+    $(document).on("click", "#editfoodstatus", function (e) {
+        debugger;
+        var id = $(this).closest('tr').attr('id');
+        var currentRow = $(this).closest("tr");
+        var itemId = currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+        var itemName = currentRow.find("td:eq(1)").text(); // get current row 1st TD value
+        var quantity = currentRow.find("td:eq(2)").text(); // get current row 2nd TD
+
+        $("#editfoodstatusmodal .modal-content .readitemid").val(itemId);
+        $("#editfoodstatusmodal .modal-content .readitemname").val(itemName);
+        $("#editfoodstatusmodal .modal-content .readquantity").val(quantity);
+
+    });
+
+    //Alacarte Food Status change
+    $('#editstatus').on('click', function (e) {
+        e.preventDefault();
+        debugger;
+        var itemID = $("#editfoodstatusmodal .modal-content .readitemid").val();
+        var foodstatus = $('#editfoodstatusmodal form #togBtn').is(':checked') ? "Prepared" : "";
+        var APIString = '@Model.Connectionstringitemstatuschange';
+        $.ajax({
+
+            type: 'POST',
+            url: APIString,
+            data: JSON.stringify({
+                itemId: itemID,
+                itemStatus: foodstatus.trim()
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                debugger;
+                if (data.status) {
+                    toastr.success(data.message);
+                     window.setTimeout(function () {
+                            window.location.href='@Url.Action("ChefOder", "Chef")'
+                        }, 1000);
+
+                } else {
+                    toastr.error(data.message);
+                }
+
+            },
+            error: function (ajaxContext) {
+
+                alert(" its Fail");
+            }
+        });
+    });
+
+     // Need to cook for subscription
+    $(document).ready(function () {
+        var APIString = '@Model.Connectionstringneedtocooksubscription';
+        debugger;
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: APIString,
+            data: "{}",
+            dataType: "json",
+            success: function (needtocooksub, status) {
+                console.log("needtocooksubscription", needtocooksub)
+                debugger;
+                 let data = needtocooksub.NeedToCookSubscription;
+                data.forEach(function (dt) {
+                    if (dt.totalQuantity) {
+                        $("#needtocooksub").append("<tr>" +
+                            "<td>" + dt.subscriptionTitle + "</td>" +
+                            "<td>" + dt.meal + "</td>" +
+                            "<td>" + dt.totalQuantity + "</td>" +
+                            "<td style='display: none'>" + dt.day + "</td>" +
+                            "<td style='display: none'>" + dt.subscriptionId + "</td>" +
+                            "<td>" + `<a id="editfoodstatussub" 'data-bs-toggle="tooltip" data-bs-placement="top"  title = "Edit!"' onclick= $('#editfoodsubscriptionstatusmodal').modal('show')><i class='fas fa-pencil-alt text-secondary'></i></a>` + "</td>")
+                            }            
+                    })
+
+            },
+            error: function (Result) {
+                alert("Error Api Subscription");
+            }
+        });
+    });
+
+    //to send subscription status change
+    $(document).on("click", "#editfoodstatussub", function (e) {
+        debugger;
+        var id = $(this).closest('tr').attr('id');
+        var currentRow = $(this).closest("tr");
+        var itemName = currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+        var meal = currentRow.find("td:eq(1)").text();
+        var quantity = currentRow.find("td:eq(2)").text();
+        var day = currentRow.find("td:eq(3)").text();
+        var subscriptionId = currentRow.find("td:eq(4)").text();
+
+        $("#editfoodsubscriptionstatusmodal .modal-content .readitemname").val(itemName);
+        $("#editfoodsubscriptionstatusmodal .modal-content .readmeal").val(meal);
+        $("#editfoodsubscriptionstatusmodal .modal-content .readquantity").val(quantity);
+        $("#editfoodsubscriptionstatusmodal .modal-content .readsubday").val(day);
+        $("#editfoodsubscriptionstatusmodal .modal-content .readsubid").val(subscriptionId);
+    });
+
+    //Subscription Food Status change
+    $('#editstatussubscription').on('click', function (e) {
+        e.preventDefault();
+        debugger;
+         var subscriptionName = $("#editfoodsubscriptionstatusmodal .modal-content .readitemname").val();
+         var mealName = $("#editfoodsubscriptionstatusmodal .modal-content .readmeal").val();
+         var quantity = $("#editfoodsubscriptionstatusmodal .modal-content .readquantity").val();
+          var day = $("#editfoodsubscriptionstatusmodal .modal-content .readsubday").val();
+         var subscriptionid = $("#editfoodsubscriptionstatusmodal .modal-content .readsubid").val();
+        var foodstatus = $("#editfoodsubscriptionstatusmodal  form #togBtnSub").is(':checked') ? "Prepared" : "";
+
+        var APIString = '@Model.Connectionstringsubscriptionitemstatuschange';
+        $.ajax({
+
+            type: 'POST',
+            url: APIString,
+            data: JSON.stringify({
+                subscriptionId: subscriptionid,
+                subscriptionTitle: subscriptionName,
+                day: day,
+                 meal: mealName,
+                totalQuantity: quantity,
+                itemStatus: foodstatus.trim()
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+             success: function (data) {
+                debugger;
+                if (data.status) {
+                    toastr.success(data.message);
+                     window.setTimeout(function () {
+                            window.location.href='@Url.Action("ChefOder", "Chef")'
+                        }, 1000);
+
+                } else {
+                    toastr.error(data.message);
+                }
+
+            },
+            error: function (ajaxContext) {
+
+                alert(" its Fail");
+            }
+        });
+    });
+    //toggle Switch
+    var switchStatus = false;
+    $("#togBtn").on('change', function () {
+        if ($(this).is(':checked')) {
+            switchStatus = $(this).is(':checked');
+            alert("Are you Sure Food Got Prepared?");// To verify
+        }
+        //else {
+        //    switchStatus = $(this).is(':checked');
+        //    alert(switchStatus);// To verify
+        //}
+    });
+
+    var switchStatus = false;
+    $("#togBtnSub").on('change', function () {
+        if ($(this).is(':checked')) {
+            switchStatus = $(this).is(':checked');
+            alert("Are you sure Subscription Food Got Prepared");// To verify
+        }
+        //else {
+        //    switchStatus = $(this).is(':checked');
+        //    alert(switchStatus);// To verify
+        //}
+    });
+
+    // Ordered AddOnlis List
+    $(document).ready(function () {
+        var APIString = '@Model.ConnectionstringneedtocookAddOnlist';
+        debugger;
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            data: "{}",
+            dataType: "json",
+            success: function (res, status) {
+                debugger;
+                console.log("addOns", res);
+                var data = res.AddOnCount;
+                data.forEach(function (dt) {
+                    console.log(dt);
+
+                    $("#addOnslist").append("<tr>" +
+
+
+                        "<td>" + dt.addOnName + "</td>" +
+                        "<td>" + dt.addOnBaseQuantity+ "</td>")
+                })
+            },
+            error: function (Result) {
+                alert("Error");
+            }
+        });
+    });
+
+
+
+</script>
+

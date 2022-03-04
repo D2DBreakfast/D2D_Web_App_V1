@@ -1,0 +1,132 @@
+﻿@model D2D.WebApp.ViewModel.NeedtocookVM
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Menu</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Preapared FOOD List</li>
+                </ol>
+            </nav>
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <h6>ALACARTE PREPARED FOOD LIST</h6>
+                </div>
+                <div class="ms-panel-body">
+                    <div class="table-responsive">
+                        <table id="preparedItemsAllaCarte" class="table table-hover thead-primary" data-toolbar="#toolbar" data-toggle="table" data-maintain-meta-data="true">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Order Id</th>
+                                    <th scope="col">Items</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@*------------------------------------------------Subscription Prepared Items--------------------------------------*@
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+          
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <h6>SUBSCRIPTION PREPARED FOOD LIST</h6>
+                </div>
+                <div class="ms-panel-body">
+                    <div class="table-responsive">
+                        <table id="preparedItemsSubscription" class="table table-hover thead-primary" data-toolbar="#toolbar" data-toggle="table" data-maintain-meta-data="true">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Order Id</th>
+                                    <th scope="col">Items</th>
+                                    <th scope="col">Subscription Type</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+
+<script>
+  // Prepared Alacarte Items
+    $(document).ready(function () {
+        var APIString = '@Model.ConnectionstringfetchAllPreparedItems';
+        debugger;
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            data: "{}",
+            dataType: "json",
+            success: function (needtopack, status) {
+                console.log("needtopackkkkk", needtopack)
+                debugger;
+                let data = needtopack.PreparedOrders;
+                data.forEach(function (dt) {
+                    dt.orderDetails.forEach(function (it) {
+                        $("#preparedItemsAllaCarte").append("<tr>" +
+                            "<td>" + dt.orderId + "</td>" +
+                            "<td >" + it.itemName + "</td>" +
+                            "<td >" + it.itemBaseQuantity + "</td>" +
+                           "<td style ='color: black;  font-size: 18px;  font-weight: bold;'>" + it.itemStatus + "</td>")
+                    })
+                })
+            },
+            error: function (Result) {
+                alert("Error or Error");
+            }
+        });
+    });
+
+    // Prepared Subscription Items
+    $(document).ready(function () {
+        var APIString = '@Model.ConnectionstringfetchAllSubscriptionPreparedItems';
+        debugger;
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            data: "{}",
+            dataType: "json",
+            success: function (preparedSubscription, status) {
+                console.log("PreapredSubscription", preparedSubscription)
+                debugger;
+                let data = preparedSubscription.orderList;
+                data.forEach(function (dt) {
+                    $("#preparedItemsSubscription").append("<tr>" +
+                        "<td>" + dt.orderId + "</td>" +
+                        "<td >" + dt.meal + "</td>" +
+                        "<td >" + dt.subscriptionTitle + "</td>" +
+                        "<td style ='color: black;  font-size: 18px;  font-weight: bold;'>" + dt.itemStatus + "</td>")
+                })
+            },
+            error: function (Result) {
+                alert("Error or Error");
+            }
+        });
+    });
+</script>

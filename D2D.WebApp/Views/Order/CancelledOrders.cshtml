@@ -1,0 +1,166 @@
+﻿@model D2D.WebApp.ViewModel.OrderListVM
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Cancelled Orders</li>
+                </ol>
+            </nav>
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <h6> Cancelled ORDER LIST</h6>
+                </div>
+                <div class="ms-panel-body">
+                    <div class="table-responsive">
+                        <table id="cancelledOrder" class="table table-hover thead-primary" data-toolbar="#toolbar" data-toggle="table" data-maintain-meta-data="true">
+                            <thead>
+                                <tr>
+                                    <th scope="col">User Name</th>
+                                    <th scope="col">Order Id</th>
+                                    <th scope="col">User Id</th>
+                                    <th scope="col">Order Date</th>
+                                    <th scope="col">Payment Mode</th>
+                                    <th scope="col">Paid Amount</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Reason</th>
+                                    <th scope="col">Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View table Modal -->
+<div class="modal fade" id="viewmodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title has-icon text-white" id="NoteModal">View Items</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="ms-panel-body">
+                <div class="table-responsive">
+                    <table class="myTableview table table-hover thead-primary">
+                        <thead>
+                            <tr>
+                                <th scope="col">Items or Plan Name</th>
+                                <th scope="col">Quantity or Plan Type</th>
+                                <th scope="col">Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+
+@*//------------------------------------------------Display Cancelled Orders-------------------------------------------------------------*@
+<script>
+        $(document).ready(function () {
+        var APIString = '@Model.ConnectionstringcancelledOrders';
+        debugger;
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            data: "{}",
+            dataType: "json",
+            success: function (data, status) {
+                console.log("CancelledOrders", data)
+                var subscriptionOrders = data.subscriptionOrders;
+                var cartOrders = data.allACartOrders;   
+                var orderList;
+                
+                if ('subscriptionOrders' in data && 'allACartOrders' in data) {
+                    orderList = subscriptionOrders.subscriptionCancelledOrderList.concat(cartOrders.alacartCancelledOrderList);
+
+                } else if ('subscriptionOrders' in data) {
+                    orderList = subscriptionOrders.subscriptionCancelledOrderList;
+                } else if ('allACartOrders' in data) {
+                    orderList = cartOrders.alacartCancelledOrderList;
+                    
+                }
+
+                console.log('orderListdisplay',orderList)
+                orderList.forEach(function (dt) {
+                    var orderDetails = dt.orderDetails;
+                    var itemNames = [];
+                    var itemDetails;
+
+                    if ('orderDetails' in dt) {
+
+                        orderDetails.forEach(function (od) {
+                            console.log('oddddd', od)
+                            itemDetails = {
+                                'itemName': od.itemName,
+                                'quantity': od.itemBaseQuantity ,
+                                'address': dt.address
+                            }
+                        })
+                    } else if ('address' in dt){
+                     itemDetails = {
+                         'itemName': dt.subscriptionTitle + '-(Subscription Plan)',
+                         'quantity': dt.subscriptionPlan + '-(Days Plan)',
+                        'address': dt.address
+                    }
+                    }
+                itemNames.push(itemDetails);
+                    console.log("CancelledList", dt)
+                    var categoryType = dt.categoryType == "Subscription" ? dt.categoryType : "Allacart";
+                    if (categoryType == "Subscription") {
+                        categoryType = categoryType + "</br>" + dt.subscriptionPlan + ('-Days Plan') + "</br>" + dt.subscriptionTitle + ('-Plan Name') ;
+                    }
+                    $("#cancelledOrder").append("<tr>" +
+                        "<td>" + dt.userName + "</td>" +
+                        "<td>" + dt.orderId + "</td>" +
+                        "<td>" + dt.userId + "</td>" + 
+                        "<td>" + dt.orderDate + "</td>" +
+                        "<td>" + dt.paymentMethod + "</td>" +
+                        "<td>" + dt.paymentPaid + "</td>" +
+                        "<td>" + categoryType + "</td>" +
+                        "<td>" + dt.reasonForcancellation + "</td>" +
+                        
+                        "<td>" + `<a class = "view" data-itemName='${JSON.stringify(itemNames)}' onclick= $('#viewmodal').modal('show')><i class="fa fa-eye  text-secondary text-success"></i></a>`)
+                })
+            },
+            error: function (Result) {
+                alert("Please Wait for SomeTime Server is Loading");
+            }
+        });
+        });
+
+
+    $(document).on("click", "a.view", function (e) {
+        var itemDetails = $(this).data('itemname');
+
+        $("#viewmodal .modal-content .myTableview tbody").html('');
+        $("#viewmodal .modal-content .myTableview tbody").append("<td>" + itemDetails[0].itemName + "</td>");
+        $("#viewmodal .modal-content .myTableview tbody").append("<td>" + itemDetails[0].quantity + "</td>");
+        $("#viewmodal .modal-content .myTableview tbody").append("<td>" + itemDetails[0].address + "</td>");
+       
+    });
+
+
+</script>

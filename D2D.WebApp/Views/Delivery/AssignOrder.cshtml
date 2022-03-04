@@ -1,0 +1,189 @@
+﻿@model D2D.WebApp.ViewModel.deliveryVM
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+
+<div class="ms-content-wrapper">
+    <div class="row">
+
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Assign</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Assign Orders</li>
+                </ol>
+            </nav>
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="align-self-center align-left">
+                            <h6>Assign Orders</h6>
+                        </div>
+                        <div>
+                          
+                            <form class="needs-validation clearfix" autocomplete="off">
+                                <div class="form-row">
+                                    <label for="validationCustom01"><b>Delivery Boys List</b></label>
+                                    <select class="form-control" id="deliveryboys">
+                                        <option value=" " id="chooseAddon">--Select Delivery Boy--</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select Sub Catagory.
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ms-panel-body">
+                    <div class="table-responsive">
+                        <table id="myTable" class="table table-hover thead-primary">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Select</th>
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">User ID</th>
+                                    <th scope="col">User Name</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">Sector</th>
+                                    <th scope="col" style="display:none">Category</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-primary"  type="submit" id="assignorder">Assign Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+        var APIString = '@Model.Connectionstringdeliveryboyslist';
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            dataType: "json",
+            success: function (Result) {
+                debugger;
+                console.log(Result.list)
+                var deliveryboyslist = Result.list
+                var ele = document.getElementById('deliveryboys');
+                for (var i = 0; i < deliveryboyslist.length; i++) {
+                    // POPULATE SELECT ELEMENT WITH JSON.
+                    ele.innerHTML = ele.innerHTML +
+                        '<option value="' + deliveryboyslist[i]['deliveryBoyId'] + '">' + deliveryboyslist[i]['userName'] + '</option>';
+                }
+            },
+            error: function (Result) {
+                alert("Error or Error");
+            }
+        });
+  });
+
+     // Need to Deliver
+     $(document).ready(function () {
+        var APIString = '@Model.Connectionstringfetchallpackedorders';
+        debugger;
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            data: "{}",
+            dataType: "json",
+            success: function (data, status) {
+                console.log("AssignOrder", data)
+                var subscriptionOrders = data.subscriptionOrders;
+                var cartOrders = data.allACartOrders;
+                var orderList;
+                if ('subscriptionOrders' in data  && 'allACartOrders' in data) {
+                    orderList = subscriptionOrders.packedOrderList.concat(cartOrders.AllACartOrder);
+                } else if ('subscriptionOrders' in data) {
+                    orderList = subscriptionOrders.packedOrderList;
+                } else if ('allACartOrders' in data) {
+                    orderList = cartOrders.AllACartOrder;
+                }
+                orderList.forEach(function (dt) {
+                    console.log("AssignTableData", dt)
+                    var categoryType = dt.categoryType == "Subscription" ? dt.categoryType : "";
+                    $("#myTable").append("<tr>" +
+                        "<td>" + ' <input type="checkbox" /> ' + "</td>" +
+                        "<td>" + dt.orderId + "</td>" +
+                        "<td>" + dt.userId + "</td>" +
+                        "<td>" + dt.userName + "</td>" +
+                        "<td>" + dt.address + "</td>" +
+                        "<td>" + dt.sectorId + "</td>" +
+                        "<td style='display: none'>" + categoryType + "</td>")
+                })
+            },
+            error: function (Result) {
+                alert("Error or Error");
+            }
+        });
+    });
+
+     //Assigning Orders to Delivery Boys
+    $(document).on("click", "#assignorder", function (e) {
+       
+        e.preventDefault();
+        var orders = [];
+        debugger;
+        $('input:checked').each(function (i) {
+            var orderid = $(this).parent('td').next().text();
+            var currentRow = $(this).closest("tr");
+            var categoryType = currentRow.find("td:eq(5)").text();
+           
+            var order = {
+                "orderId": orderid,
+                "categoryType": categoryType
+            };
+            
+            orders.push(order);
+        })
+        var deliveryBoyid = $('#deliveryboys :selected').val();
+        if (deliveryBoyid === '') {
+            alert("Pls Select Deliverboy");
+        } else {
+
+
+            var APIString = '@Model.Connectionstringassigntodeliveryboy';
+            $.ajax({
+                type: 'POST',
+                url: APIString,
+                data: JSON.stringify({
+                    deliveryOrders: orders,
+                    deliveryBoyId: deliveryBoyid
+                }),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+
+                    debugger;
+                    if (data.status) {
+                        toastr.success(data.message)
+                        window.setTimeout(function () {
+                        }, 0000);
+                    } else {
+                        toastr.error(data.message)
+                    }
+                },
+
+            });
+
+        }
+        })
+    
+
+</script>

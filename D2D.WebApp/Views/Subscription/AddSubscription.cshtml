@@ -1,0 +1,1901 @@
+﻿@model D2D.WebApp.ViewModel.AddSubscriptionVM
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewData["Title"] = "ImageSave";
+}
+
+@*Modal to creat add subscription*@
+<div class="modal fade" id="notesmodal" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title has-icon text-white" id="NoteModal">Add Subscription</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="ms-panel-body">
+                <form class="needs-validation clearfix" autocomplete="off">
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <div class="input-group">
+                                <label for="validationCustom22"><b>Main Subscription</b></label>
+                                <div class="input-group">
+                                    <textarea style=" height: 38px;background: #ffffff" id="Note" name="Note" placeholder="Subscription" value="Subscription" class="form-control" readonly></textarea>
+                                    <div class="invalid-feedback">
+                                        Please provide a message.
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="input-group">
+                                <label for="validationCustom02"><b>Subscription Name</b></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="SubSubscriptionName" name="SubSubscriptionName " value=" " required>
+                                    <div class="invalid-feedback">
+                                        Enter!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom03"><b>Amount</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="SubAmount" name="SubAmount" value="" required>
+                                <div class="invalid-feedback">
+                                    Enter!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <select name="subscriptionFoodType" id="subscriptionFoodType" class="form-control">
+                                    <option value="true">VEG</option>
+                                    <option value="false">NON-VEG</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select Food type.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom12"><b>Package Image</b></label>
+                            <div class="custom-file">
+                                <input class="form-control" name="files" type="file" id="fileUpload" />
+                                @*<input type="file" class="custom-file-input" id="validatedCustomFile">
+                                    <label class="custom-file-label" for="validatedCustomFile">Upload Image...</label>
+                                    <div class="invalid-feedback">Example invalid custom file feedback</div>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                            <label for="validationCustom12"><b>Description</b></label>
+                            <div class="input-group">
+                                <textarea rows="5" id="SubDescription" name="SubDescription" class="form-control"
+                                          placeholder="Message"></textarea>
+                                <div class="invalid-feedback">
+                                    Please provide a message.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <button id="AddDetails"  value="Upload" class="btn btn-primary">Add Details</button>
+                       
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+@*Modal to Create Subscription Menu*@
+<div class="modal fade" id="notesmodalcreate" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 90%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title has-icon text-white" id="NoteModal">Add Subscription Menu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="ms-panel-body">
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <label for="validationCustom22"><b>Package</b></label>
+                        <div class="input-group">
+                            <textarea style=" height: 38px;background: #ffffff" placeholder="Subscription" value="Subscription" class="form-control" readonly></textarea>
+                            <div class="invalid-feedback">
+                                Please provide a message.
+                            </div>
+                            <div class="invalid-feedback">
+                                Please select Subscription.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="validationCustom12"><b>Package Type</b></label>
+                        <div class="input-group">
+                            <select class="form-control" id="packagelist" name="packagelist" value=" ">
+                                <option id="packagename" value=" ">Select Package Type</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a message.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="validationCustom12"><b>Food Type</b></label>
+                        <div class="input-group">
+                            <p class="form-control subscriptionFoodType" id="subscriptionFoodType">
+
+                                <div class="invalid-feedback">
+                                    Please select Food type.
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="col-md-6 mb-3">
+                        <label for="validationCustom12"><b>Package Type</b></label>
+                        <div class="input-group">
+                            <select class="form-control" id="packagelist" name="packagelist" value=" ">
+                                <option id="packagename" value=" ">Select Package Type</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a message.
+                            </div>
+                        </div>
+                    </div>*@
+                @*<div class="col-md-12 mb-3">
+                        <label for="validationCustom12">Add Catagory Image</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="validatedCustomFile">
+                            <label class="custom-file-label" for="validatedCustomFile">Upload Image...</label>
+                            <div class="invalid-feedback">Example invalid custom file feedback</div>
+                        </div>
+                    </div>*@
+
+                <div class="col-md-12 mb-3">
+                    <p class="ms-directions" style="font-size:16px"><strong>Add Plan Price</strong></p>
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom01"><b> 7 Days Price(AED)</b></label>
+                            <div class="input-group">
+
+                                <p class="form-control sevenDayPrice" id="BasicPrice">
+                                    <div class="invalid-feedback">
+                                        Please provide a message.
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom02"><b>15 Days Price(AED)</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="fifteenDayPrice" placeholder="" name="fifteenDayPrice" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom03"><b>30 Days Price(AED)</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="thirtyDayPrice" placeholder="" name="thirtyDayPrice" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <p class="ms-directions" style="font-size:16px"><strong>Add Menus</strong></p>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom01"><b>Sunday Menu</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="sundayMenu" name="sundayMenu" placeholder="" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom12"><b>Menu Image</b></label>
+                            <div class="custom-file">
+                                @*<input type="file" class="custom-file-input" id="sundayImage" name="sundayImage">
+                                <label class="custom-file-label" for="validatedCustomFile">Upload Image...</label>
+                                <div class="invalid-feedback">Example invalid custom file feedback</div>*@
+                                <input class="form-control" name="files" type="file" id="sundayfileUpload" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom03"><b>Item Discription</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="sundayDis" name="sundayDis" placeholder="" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <select name="sundayFoodType" id="sundayFoodType" class="form-control">
+                                    <option value="true">VEG</option>
+                                    <option value="false">NON-VEG</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select Food type.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom01"><b>Monday Menu</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="mondayMenu" name="mondayMenu" placeholder="" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom12"><b>Menu Image</b></label>
+                            <div class="custom-file">
+                                @*<input type="file" class="custom-file-input" id="mondayImage" name="mondayImage">
+                                <label class="custom-file-label" for="validatedCustomFile">Upload Image...</label>
+                                <div class="invalid-feedback">Example invalid custom file feedback</div>*@
+                                <input class="form-control" name="files" type="file" id="mondayfileUpload" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom03"><b>Item Discription</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="mondayDis" name="mondayDis" placeholder="" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <select name="mondayFoodType" id="mondayFoodType" class="form-control">
+                                    <option value="true">VEG</option>
+                                    <option value="false">NON-VEG</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select Food type.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom01"><b>Tuesday Menu</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="tusMenu" name="tusMenu" placeholder="" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom12"><b>Menu Image</b></label>
+                            <div class="custom-file">
+                                @*<input type="file" class="custom-file-input" id="tusImage" name="tusImage">
+                                <label class="custom-file-label" for="validatedCustomFile">Upload Image...</label>
+                                <div class="invalid-feedback">Example invalid custom file feedback</div>*@
+                                <input class="form-control" name="files" type="file" id="tuesdayfileUpload" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom03"><b>Item Discription</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="tusDis" name="tusDis" placeholder="" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <select name="tuesdayFoodType" id="tuesdayFoodType" class="form-control">
+                                    <option value="true">VEG</option>
+                                    <option value="false">NON-VEG</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select Food type.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom01"><b>Wednesday Menu</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="webMenu" name="webMenu" placeholder="" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom12"><b>Menu Image</b></label>
+                            <div class="custom-file">
+                                @*<input type="file" class="custom-file-input" id="webImage" name="webImage">
+        <label class="custom-file-label" for="validatedCustomFile">Upload Image...</label>
+        <div class="invalid-feedback">Example invalid custom file feedback</div>*@
+                                <input class="form-control" name="files" type="file" id="wednesdayfileUpload" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom03"><b>Item Discription</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="webDis" name="webDis" placeholder="" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <select name="wednesdayFoodType" id="wednesdayFoodType" class="form-control">
+                                    <option value="true">VEG</option>
+                                    <option value="false">NON-VEG</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select Food type.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom01"><b>Thursday Menu</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="thursMenu" name="thursMenu" placeholder="" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom12"><b>Menu Image</b></label>
+                            <div class="custom-file">
+                                @*<input type="file" class="custom-file-input" id="thursImage" name="thursImage">
+                                 <label class="custom-file-label" for="validatedCustomFile">Upload Image...</label>
+                                <div class="invalid-feedback">Example invalid custom file feedback</div>*@
+                                <input class="form-control" name="files" type="file" id="thursdayfileUpload" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom03"><b>Item Discription</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="thursDis" name="thursDis" placeholder="" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <select name="thursdayFoodType" id="thursdayFoodType" class="form-control">
+                                    <option value="true">VEG</option>
+                                    <option value="false">NON-VEG</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select Food type.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <button type="submit" id="addSubscriptionMenu" class="btn btn-primary trigger-swal" data-swal="positioned">Add Subscsription </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*Modal to Edit subscription*@
+<div class="modal fade" id="notesmodaledit" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title has-icon text-white" id="NoteModal">Edit Subscription</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="ms-panel-body">
+                <form class="needs-validation clearfix" autocomplete="off">
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                            <div class="input-group">
+                                <label for="validationCustom02">Subscription Name</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="SubSubscriptionName" name="SubSubscriptionName" value=" " required readonly>
+                                    <div class="invalid-feedback">
+                                        Enter!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom03">Amount</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="SubAmount" name="SubAmount" value=" " required>
+                                <div class="invalid-feedback">
+                                    Enter!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom03">Food Type</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="SubscriptionFoodType" name="SubscriptionFoodType" value=" " readonly>
+
+                                <div class="invalid-feedback">
+                                    Please select Food type.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom12"> Update Package Image</label>
+                            <div class="custom-file">
+                                <input class="form-control" name="files" type="file" id="editfileUpload" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12 mb-3">
+                            <label for="validationCustom12">Description</label>
+                            <div class="input-group">
+                                <textarea rows="5" id="SubDescription" name="SubDescription" class="form-control"
+                                          placeholder="Message"></textarea>
+                                <div class="invalid-feedback">
+                                    Please provide a message.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <input type='hidden' name='subscriptionID' value=''>
+                        <button id="updateSubscriptionDetails" value="Upload" class="btn btn-primary">Update Details</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@*Modal to Edit Subscription Menu*@
+<div class="modal fade" id="notesmodaleditsubmenu" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 80%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title has-icon text-white" id="NoteModal">Edit Subscription Menu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="ms-panel-body">
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <label for="validationCustom22"><b>Package</b></label>
+                        <div class="input-group">
+                            <textarea style=" height: 38px;background: #ffffff" placeholder="Subscription" value="Subscription" class="form-control" readonly></textarea>
+                            <div class="invalid-feedback">
+                                Please provide a message.
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="validationCustom12"><b>Package Type</b></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="viewsubscription" name="viewsubscription" value=" " readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="validationCustom12"><b>Food Type</b></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="viewsubfoodtype" name="viewsubfoodtype" value=" " readonly>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-12 mb-3">
+                    <p class="ms-directions" style="font-size:16px"><strong>Edit Plan Price</strong></p>
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom12"><b>7 Days Price(AED)</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewsevendayprice" name="viewsevendayprice" value=" " readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom02"><b>15 Days Price(AED)</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="editfifteendayprice" name="editfifteendayprice" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom03"><b>30 Days Price(AED)</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="editthirtydaysdayprice" name="editthirtydaysdayprice" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <p class="ms-directions" style="font-size:16px"><strong>Edit Menus</strong></p>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom01"><b>Sunday Menu</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="editsundayMenu" name="editsundayMenu" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom12" style="display: block; margin-left: auto; margin-right: auto; text-align:center;"><b>Menu Image</b></label>
+                            <div class="input-group">
+                                <img src="" alt="" name="editsundayImage" width="200" height="300" style="display: block; margin-left: auto; margin-right: auto; max-width: 65px; border-radius: 50%;">
+                               <input class="form-control" name="files" type="file" id="editSundayimg_fileUpload" />
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom03"><b>Item Discription</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="editsundayDis" name="editsundayDis" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <select name="editsundayFoodType" id="editsundayFoodType" class="form-control">
+                                    <option value="true">VEG</option>
+                                    <option value="false">NON-VEG</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select Food type.
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="subscriptionID" id="subscriptionID" value="" />
+                        @*<div class="col-md-3 mb-3" style="display:none">
+            <label for="validationCustom03"><b>Subscription ID</b></label>
+                <input type="text" class="form-control" id="subscriptionID" name="subscriptionID" value="" required>
+        </div>*@
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom01"><b>Monday Menu</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="editmondayMenu" name="editmondayMenu" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom12" style="display: block; margin-left: auto; margin-right: auto; text-align:center;"><b>Menu Image</b></label>
+                            <div class="input-group">
+                                <img src="" alt="" name="editmondayImage" width="200" height="300" style="display: block; margin-left: auto; margin-right: auto; max-width: 65px; border-radius: 50%;">
+                                <input class="form-control" name="files" type="file" id="editMondayimg_fileUpload">
+                             
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom03"><b>Item Discription</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="editmondayDis" name="editmondayDis" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <select name="editmondayFoodType" id="editmondayFoodType" class="form-control">
+                                    <option value="true">VEG</option>
+                                    <option value="false">NON-VEG</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select Food type.
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="subscriptionID" id="subscriptionID" value="" />
+                        @*<div class="col-md-3 mb-3" style="display:none">
+            <label for="validationCustom03"><b>Subscription ID</b></label>
+            <input type="text" class="form-control" id="subscriptionID" name="subscriptionID" value="" required>
+        </div>*@
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom01"><b>Tuesday Menu</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="edittuesdayMenu" name="edittuesdayMenu" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom12" style="display: block; margin-left: auto; margin-right: auto; text-align:center;"><b>Menu Image</b></label>
+                            <div class="input-group">
+                                <img src="" alt="" name="edittuesdayImage" width="200" height="300" style="display: block; margin-left: auto; margin-right: auto; max-width: 65px; border-radius: 50%;">
+                                <input class="form-control" name="files" type="file" id="edittuesday_fileUpload" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom03"><b>Item Discription</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="edittuesdayDis" name="edittuesdayDis" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <select name="edittuesdayFoodType" id="edittuesdayFoodType" class="form-control">
+                                    <option value="true">VEG</option>
+                                    <option value="false">NON-VEG</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select Food type.
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="subscriptionID" id="subscriptionID" value="" />
+                        @*<div class="col-md-3 mb-3" style="display:none">
+            <label for="validationCustom03"><b>Subscription ID</b></label>
+            <input type="text" class="form-control" id="subscriptionID" name="subscriptionID" value="" required>
+        </div>*@
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom01"><b>Wednesday Menu</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="editwebnesdayMenu" name="editwebnesdayMenu" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom12" style="display: block; margin-left: auto; margin-right: auto; text-align:center;"><b>Menu Image</b></label>
+                            <div class="input-group">
+                                <img src="" alt="" name="editwebnesdayImage" width="200" height="300" style="display: block; margin-left: auto; margin-right: auto; max-width: 65px; border-radius: 50%;">
+                                <input class="form-control" name="files" type="file" id="editwednesday_fileUpload" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom03"><b>Item Discription</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="editwebnesdayDis" name="editwebnesdayDis" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <select name="editwednesdayFoodType" id="editwednesdayFoodType" class="form-control">
+                                    <option value="true">VEG</option>
+                                    <option value="false">NON-VEG</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select Food type.
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="subscriptionID" id="subscriptionID" value="" />
+                        @*<div class="col-md-3 mb-3" style="display:none">
+            <label for="validationCustom03"><b>Subscription ID</b></label>
+            <input type="text" class="form-control" id="subscriptionID" name="subscriptionID" value="" required>
+        </div>*@
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom01"><b>Thursday Menu</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="editthursdayMenu" name="editthursdayMenu" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom12" style="display: block; margin-left: auto; margin-right: auto; text-align:center;"><b>Menu Image</b></label>
+                            <div class="input-group">
+
+                                <img src="" alt="" name="editthursdayImage" width="200" height="300" style="display: block; margin-left: auto; margin-right: auto; max-width: 65px; border-radius: 50%;">
+                                <input class="form-control" name="files" type="file" id="editthursday_fileUpload" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom03"><b>Item Discription</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="editthursdayDis" name="editthursdayDis" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <select name="editthursdayFoodType" id="editthursdayFoodType" class="form-control">
+                                    <option value="true">VEG</option>
+                                    <option value="false">NON-VEG</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select Food type.
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="subscriptionID" id="subscriptionID" value="" />
+                        @*<div class="col-md-3 mb-3" style="display:none">
+            <label for="validationCustom03"><b>Subscription ID</b></label>
+            <input type="text" class="form-control" id="subscriptionID" name="subscriptionID" value="" required>
+        </div>*@
+                        <div class="col-md-12 mb-3">
+                            <input type="hidden" name="ids" value="" />
+                            @*<input type="hidden" name="plans" value="" />*@
+                            <button type="submit" id="updateSubscsriptionMenu" class="btn btn-primary trigger-swal" data-swal="positioned">Update Subscsription Menu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*Modal to view Subscription Menu*@
+<div class="modal fade" id="notesmodalviewsubmenu" tabindex="-1" role="dialog" aria-labelledby="notes-modal">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 90%;" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title has-icon text-white" id="NoteModal">View Subscription Menu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="ms-panel-body">
+
+                <div class="col-md-12 mb-3">
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom01"><b>Sunday Menu</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewsundayMenu" name="viewsundayMenu" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom12" style="display: block; margin-left: auto; margin-right: auto; text-align:center;"><b>Menu Image</b></label>
+                            <div class="input-group">
+                                <img src="" alt=""  name="viewsundayImage" width="200"  height="300" style="display: block; margin-left: auto; margin-right: auto; max-width: 65px; border-radius: 50%;">
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom03"><b>Item Discription</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewsundayDis" name="viewsundayDis" placeholder="" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewsundayFoodType" name="viewsundayFoodType" value="" readonly>
+                                <div class="invalid-feedback">
+                                    Please select Food type.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom01"><b>Monday Menu</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewmondayMenu" name="viewmondayMenu" value="" readonly >
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom12" style="display: block; margin-left: auto; margin-right: auto; text-align:center;"><b>Menu Image</b></label>
+                            <div class="input-group">
+                                @*<img src="" alt="" name="viewmondayImage"  width="200"  height="300">*@
+                                <img src="" alt="" name="viewmondayImage" width="200" height="300" style="display: block; margin-left: auto; margin-right: auto; max-width: 65px; border-radius: 50%;">
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom03"><b>Item Discription</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewmondayDis" name="viewmondayDis" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewmondayFoodType" name="viewmondayFoodType" value="" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom01"><b>Tuesday Menu</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewtuesdayMenu" name="viewtuesdayMenu" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom12" style="display: block; margin-left: auto; margin-right: auto; text-align:center;"><b>Menu Image</b></label>
+                            <div class="input-group">
+                           
+                                <img src=""  alt="" name="viewtuesdayImage" width="200" height="300" style="display: block; margin-left: auto; margin-right: auto; max-width: 65px; border-radius: 50%;">
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom03"><b>Item Discription</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewtuesdayDis" name="viewtuesdayDis" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewtuesdayFoodType" name="viewtuesdayFoodType" value="" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom01"><b>Wednesday Menu</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewwednesdayMenu" name="viewwednesdayMenu" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom12" style="display: block; margin-left: auto; margin-right: auto; text-align:center;"><b>Menu Image</b></label>
+                            <div class="input-group">
+                               
+                                <img src=""  alt="" name="viewwednesdayImage" width="200" height="300" style="display: block; margin-left: auto; margin-right: auto; max-width: 65px; border-radius: 50%;">
+
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom03"><b>Item Discription</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewwednesdayDis" name="viewwednesdayDis" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewwednesdayFoodType" name="viewwednesdayFoodType" value="" readonly>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom01"><b>Thursday Menu</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewthursdayMenu" name="viewthursdayMenu" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom12" style="display: block; margin-left: auto; margin-right: auto; text-align:center;"><b>Menu Image</b></label>
+                            <div class="input-group">   
+                                <img src=""  alt="" name="viewthursdayImage" width="200" height="300" style="display: block; margin-left: auto; margin-right: auto; max-width: 65px; border-radius: 50%;">
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom03"><b>Item Discription</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewthursdayDis" name="viewthursdayDis" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="validationCustom22"><b>Food Type</b></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="viewthursdayFoodType" name="viewthursdayFoodType" value="" readonly>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Menu</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Subscription</li>
+                </ol>
+            </nav>
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="align-self-center align-left">
+                            <h6>SUBSCRIPTION PLAN AND MENU</h6>
+                        </div>
+                        <div>
+                            <button type="button" id="addsubcriptionmodal" class="btn btn-primary">Create Subscription Plan </button>
+                            <button type="button" id="createsubscriptionmenu" class="btn btn-primary">Create Subscription Menu </button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="ms-panel-body">
+                    <div class="table-responsive">
+                        <table id="myTable" class="table table-hover thead-primary">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Subscription Plan</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Discription</th>
+                                    <th scope="col">Food Type</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Menu</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Subscription Menu List</li>
+                </ol>
+            </nav>
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="align-self-center align-left">
+                            <h6>SUBSCRIPTION MENU LIST</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="ms-panel-body">
+                    <div class="table-responsive">
+                        <table id="subMenuList" class="table table-hover thead-primary">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Subscription ID</th>
+                                    <th scope="col">Subscription Plan</th>
+                                    @*<th scope="col">Item Name</th>*@
+                                    <th scope="col">7Day Plan Price</th>
+                                    <th scope="col">15Day Plan Price</th>
+                                    <th scope="col">30ay Plan Price</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+
+<script>
+    /*  Modal Script*/
+    $("#addsubcriptionmodal").click(function () {
+        debugger;
+        $('#notesmodal').modal('show');
+    })
+
+    $("#createsubscriptionmenu").click(function () {
+        debugger;
+        $('#notesmodalcreate').modal('show');
+    })
+
+    $("#editSubscription").click(function () {
+        debugger;
+        $('#notesmodaledit').modal('show');
+    })
+    $("#editSubscriptionmenu").click(function () {
+        debugger;
+        $('#notesmodaleditsubmenu').modal('show');
+    })
+    $("#viewSubscriptionmenu").click(function () {
+        debugger;
+        $('#notesmodalviewsubmenu').modal('show');
+    })
+    /*Add subscription Script*/
+     /* Table List*/
+    $(document).ready(function () {
+        var APIString = '@Model.Connectionstringfetchsubscriptiontype';
+        $.get(APIString, function (subscriptionDet) {
+            //console.log("mylist", SubscriptionPlans);
+            var subscriptionList = subscriptionDet.SubscriptionTitle;
+
+            subscriptionList.forEach(function (list) {
+                $("#myTable").append("<tr>" +
+                    "<td>" + list.subscriptionTitle + "</td>" +
+                    "<td>" + list.subscriptionLeastAmount + "</td>" +
+                    "<td>" + '<img src="' + list.subscriptionImage + '">' + "</td>" +
+                 /*"<td>" + '<img src="' + list.subscriptionImage + '" style="width:110px; height:70px;">' + "</td>" +*/
+                    /*"<td>" + '<img src="../../assets/img/costic/egg-sandwich.jpg" style="width:50px; height:30px;">' + "</td>" +*/
+                    "<td>" + list.subscriptionDescription + "</td>" +
+                    "<td style='display: none'>" + list.subscriptionId + "</td>" +
+                    "<td>" + list.subscriptionFoodType + "</td>" +
+                    "<td>" + `<a 'data-bs-toggle="tooltip" data-bs-placement="top"  title = "Edit!"' id="editsubscription" onclick = "$('#notesmodaledit').modal('show')"><i class='fas fa-pencil-alt text-secondary'></i></a>
+                         <a data-subscription='{"subscriptionID":"${list.subscriptionId}","itemname":"${list.subscriptionTitle}"}' 'data-bs-toggle="tooltip" data-bs-placement="top" title = "Delete!"' id="delete" ><i class='far fa-trash-alt ms-text-danger'></i></a>` + "</td>")
+                })
+            })
+    });
+    $(document).on("click", "#editsubscription", function () {
+        debugger;
+        var id = $(this).closest('tr').attr('id');
+        var currentRow = $(this).closest("tr");
+        var SubSubscriptionName = currentRow.find("td:eq(0)").text();
+        var SubAmount = currentRow.find("td:eq(1)").text();
+        var file = currentRow.find("td:eq(2)").text();
+        var SubDescription = currentRow.find("td:eq(3)").text();
+        var SubscriptionId = currentRow.find("td:eq(4)").text();
+        var subscriptionFoodType = currentRow.find("td:eq(5)").text();
+
+
+        var modal = $("#notesmodaledit .modal-content");
+        modal.find('input[name=SubSubscriptionName]').val(SubSubscriptionName);
+        modal.find('input[name=SubAmount]').val(SubAmount);
+        modal.find('input[name=files]').val(file);
+        modal.find('textarea[name=SubDescription]').val(SubDescription);
+        modal.find('input[name=subscriptionID]').val(SubscriptionId);
+        modal.find('input[name=SubscriptionFoodType]').val(subscriptionFoodType);
+    });
+     $(document).on('click', "#updateSubscriptionDetails", function (e) {
+            e.preventDefault();
+         debugger;
+
+            var subScriptionID = $('input[name=subscriptionID]').val();
+         var subscriptiondescription = $(this).parents('.needs-validation').find('.form-row textarea').val().trim();
+         var subscriptionleastamount = $(this).parents('.needs-validation').find('.form-row input[name=SubAmount]').val();
+
+
+         var files = document.getElementById("editfileUpload").files[0];
+        /* alert(files)*/
+         if (files != undefined) {
+             var upload_image = "https://d2drestmanager.azurewebsites.net/images/" + files.name;
+         }
+
+             var APIString = '@Model.ConnectionstringeditSubscription'
+            $.ajax({
+                type: 'POST',
+                url: APIString,
+                data: JSON.stringify({
+                    subscriptionId: subScriptionID,
+                    subscriptionImage: upload_image,
+                    subscriptionDescription: subscriptiondescription,
+                    subscriptionLeastAmount: subscriptionleastamount
+                }),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                     debugger;
+                    if (data.status) {
+                        toastr.success(data.message);
+                        window.setTimeout(function () {
+                            window.location.href='@Url.Action("AddSubscription", "Subscription")'
+                        }, 1000);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function (ajaxContext) {
+                    // toastr.success('Record saved', 'Success !!');
+                    alert("Please Wait Server Geting Load");
+                }
+            });
+     })
+
+
+    //Adding image to controller for create subscription
+    $("#AddDetails").click(function (e) {
+        debugger;
+        var files = $('#fileUpload').prop("files");
+        formData = new FormData();
+        formData.append("files", files[0]);
+        $.ajax({
+            type: 'POST',
+            url: "/Subscription/ImageSave",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                debugger
+            }
+        });
+    })
+
+    //Edit  image to controller for Edit subscription
+    $("#updateSubscriptionDetails").click(function (e) {
+        debugger;
+        var files = $('#editfileUpload').prop("files");
+        formData = new FormData();
+        formData.append("files", files[0]);
+        $.ajax({
+            type: 'POST',
+            url: "/Subscription/ImageSave",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                debugger
+            }
+        });
+    })
+
+     //Deleting Menu Item
+    $(document).on("click", "#delete", function (e) {
+        e.preventDefault();
+        debugger;
+        var subscription = JSON.parse($(this).attr("data-subscription"));
+
+
+        if (confirm(`Are you sure to delete this subscription menu item ${subscription.itemname} ?`)) {
+            var APIString = '@Model.Connectionstringdeletesubscription';
+            $.ajax({
+                type: 'POST',
+                url: APIString,
+                data: JSON.stringify({
+                    subscriptionId: subscription.subscriptionID
+                }),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    debugger;
+                    if (data.status) {
+                        toastr.success(data.message)
+                         window.setTimeout(function () {
+                            window.location.href = '@Url.Action("AddSubscription", "Subscription")';
+                        }, 0000);
+
+
+                    } else {
+                        toastr.error(data.message)
+                    }
+                },
+
+            });
+        }
+
+    })
+     //Subscription Menu List
+    $(document).ready(function () {
+        var APIString = '@Model.Connectionstringfetchsubscriptionmeals';
+        $.get(APIString, function (subMenu, status) {
+            var subTitle = subMenu.list;
+            //var plandetails = subMenu.planDetails;
+            //console.log('plandetails', plandetails)
+
+            subTitle.forEach(function (outerArray) {
+                console.log("Outer Array", outerArray);
+                var innerArray = outerArray.subscriptionDetails;
+                //innerArray.forEach(function (innerArray) {
+                console.log("innerArray", innerArray[0])
+                $("#subMenuList").append("<tr>" +
+                    "<td>" + innerArray[0].subscriptionId + "</td>" +
+                    "<td>" + outerArray.subscriptionTitle + "</td>" +
+                    "<td>" + innerArray[0].sevenDayPrice + "</td>" +
+                    "<td>" + innerArray[0].fifteenDayPrice + "</td>" +
+                    "<td>" + innerArray[0].thirtyDayPrice + "</td>" +
+
+                    "<td>" + `<a  id = "viewSubscriptionmenu" data-subsmenu='${JSON.stringify(innerArray)}' onclick = "$('#notesmodalviewsubmenu').modal('show')" ><i class="fa fa-eye  text-secondary text-success"></i></a>
+                                    <a id = "editSubscriptionmenu" data-editmenuinnerary='${JSON.stringify(innerArray)}'  data-editmenuoutary='${JSON.stringify(outerArray)}'  onclick = "$('#notesmodaleditsubmenu').modal('show')"><i class='fas fa-pencil-alt text-secondary'></i></a>
+                           ` + "</td>")
+           /* })*/
+                outerArray.subscriptionDetails.forEach(function (test) {
+                    console.log("test", test);
+                      $("#subMenuList").append("<tr>" +
+                        "<td style='display: none'>" + test._id + "</td>" +
+                          "<td style='display: none'>" + test.meal + "</td>" +
+                          "<td style='display: none'>" + test.subscriptionId + "</td>" +
+                        "<td style='display: none'>" + test.image + "</td>" +
+                        "<td style='display: none'>" + test.description + "</td>" +
+                        "<td style='display: none'>" + test.foodType + "</td>")
+                });
+            });
+        });
+   });
+
+    //View menu item
+    $(document).on("click", "#viewSubscriptionmenu", function (e) {
+        debugger;
+        var subsmenu = JSON.parse($(this).attr("data-subsmenu"));
+
+        /*$("#notesmodaleditsubmenu .modal-content #viewsundayMenu").val(subsmenu[0].subscriptionId);*/
+        $("#notesmodalviewsubmenu .modal-content #viewsundayMenu").val(subsmenu[0].meal);
+        $("#notesmodalviewsubmenu .modal-content img[name=viewsundayImage]").attr("src",subsmenu[0].image);
+        $("#notesmodalviewsubmenu .modal-content #viewsundayDis").val(subsmenu[0].description);
+        $("#notesmodalviewsubmenu .modal-content #viewsundayFoodType").val(subsmenu[0].foodType);
+
+
+
+        $("#notesmodalviewsubmenu .modal-content #viewmondayMenu").val(subsmenu[1].meal);
+        $("#notesmodalviewsubmenu .modal-content img[name=viewmondayImage]").attr("src", subsmenu[1].image);
+        $("#notesmodalviewsubmenu .modal-content #viewmondayDis").val(subsmenu[1].description);
+        $("#notesmodalviewsubmenu .modal-content #viewmondayFoodType").val(subsmenu[1].foodType);
+
+
+
+        $("#notesmodalviewsubmenu .modal-content #viewtuesdayMenu").val(subsmenu[2].meal);
+        $("#notesmodalviewsubmenu .modal-content img[name=viewtuesdayImage]").attr("src", subsmenu[2].image);
+        $("#notesmodalviewsubmenu .modal-content #viewtuesdayDis").val(subsmenu[2].description);
+        $("#notesmodalviewsubmenu .modal-content #viewtuesdayFoodType").val(subsmenu[2].foodType);
+
+
+        $("#notesmodalviewsubmenu .modal-content #viewwednesdayMenu").val(subsmenu[3].meal);
+        $("#notesmodalviewsubmenu .modal-content img[name=viewwednesdayImage]").attr("src", subsmenu[3].image);
+        $("#notesmodalviewsubmenu .modal-content #viewwednesdayDis").val(subsmenu[3].description);
+        $("#notesmodalviewsubmenu .modal-content #viewwednesdayFoodType").val(subsmenu[3].foodType);
+
+
+        $("#notesmodalviewsubmenu .modal-content #viewthursdayMenu").val(subsmenu[4].meal);
+        $("#notesmodalviewsubmenu .modal-content img[name=viewthursdayImage]").attr("src", subsmenu[4].image);
+        $("#notesmodalviewsubmenu .modal-content #viewthursdayDis").val(subsmenu[4].description);
+        $("#notesmodalviewsubmenu .modal-content #viewthursdayFoodType").val(subsmenu[4].foodType);
+    });
+
+    //Edit Subscription Menu
+    $(document).on("click", "#editSubscriptionmenu", function (e) {
+        debugger;
+        var editmenuoutter = JSON.parse($(this).attr("data-editmenuoutary"));
+        var editmenuinner = editmenuoutter.subscriptionDetails;
+        var ids = [];
+        $(editmenuinner).each(function (i, v) {
+           ids.push(this._id);
+        });
+        //var plandtl = JSON.parse($(this).attr("data-planDetails"));
+        //var plans = []
+        //$(plandtl).each(function (i, v) {
+        //    plans.push(this.planId);
+        //});
+
+
+
+        $("#notesmodaleditsubmenu .modal-content input[type=hidden]").val(ids);
+      /*  $("#notesmodaleditsubmenu .modal-content input[type=hidden]").val(plans);*/
+        $("#notesmodaleditsubmenu .modal-content #viewsubscription").val(editmenuoutter.subscriptionTitle);
+        $("#notesmodaleditsubmenu .modal-content #viewsubfoodtype").val(editmenuinner[0].subscriptionFoodType);
+        $("#notesmodaleditsubmenu .modal-content #viewsevendayprice").val(editmenuinner[0].sevenDayPrice);
+        $("#notesmodaleditsubmenu .modal-content #editfifteendayprice").val(editmenuinner[0].fifteenDayPrice);
+        $("#notesmodaleditsubmenu .modal-content #editthirtydaysdayprice").val(editmenuinner[0].thirtyDayPrice);
+
+        $("#notesmodaleditsubmenu .modal-content #editsundayMenu").val(editmenuinner[0].meal);
+        $("#notesmodaleditsubmenu .modal-content  img[name = editsundayImage]").attr("src",editmenuinner[0].image);
+        $("#notesmodaleditsubmenu .modal-content #editsundayDis").val(editmenuinner[0].description);
+        editmenuinner[0].foodType == 'VEG' ? $('#editsundayFoodType [value=true]').attr("selected", true) : $('#editsundayFoodType [value=false]').attr("selected", true);
+        editmenuinner[0].foodType == 'NON-VEG' ? $('#editsundayFoodType [value=false]').attr("selected", true) : '';
+        $("#notesmodaleditsubmenu .modal-content #subscriptionID").val(editmenuinner[0].subscriptionId);
+
+        $("#notesmodaleditsubmenu .modal-content #editmondayMenu").val(editmenuinner[1].meal);
+        $("#notesmodaleditsubmenu .modal-content img[name = editmondayImage]").attr("src", editmenuinner[1].image);
+        $("#notesmodaleditsubmenu .modal-content #editmondayDis").val(editmenuinner[1].description);
+        editmenuinner[1].foodType == 'VEG' ? $('#editmondayFoodType [value=true]').attr("selected", true) : $('#editmondayFoodType [value=true]').attr("selected", false) ;
+        editmenuinner[1].foodType == 'NON-VEG' ? $('#editmondayFoodType [value=false]').attr("selected", true) : '';
+        $("#notesmodaleditsubmenu .modal-content #subscriptionID").val(editmenuinner[0].subscriptionId);
+
+        $("#notesmodaleditsubmenu .modal-content #edittuesdayMenu").val(editmenuinner[2].meal);
+        $("#notesmodaleditsubmenu .modal-content img[name = edittuesdayImage]").attr("src", editmenuinner[2].image);
+        $("#notesmodaleditsubmenu .modal-content #edittuesdayDis").val(editmenuinner[2].description);
+        editmenuinner[2].foodType == 'VEG' ? $('#edittuesdayFoodType [value=true]').attr("selected", true) : $('#edittuesdayFoodType [value=true]').attr("selected", false);
+        editmenuinner[2].foodType == 'NON-VEG' ? $('#edittuesdayFoodType [value=false]').attr("selected", true) : '';
+        $("#notesmodaleditsubmenu .modal-content #subscriptionID").val(editmenuinner[0].subscriptionId);
+
+        $("#notesmodaleditsubmenu .modal-content #editwebnesdayMenu").val(editmenuinner[3].meal);
+        $("#notesmodaleditsubmenu .modal-content img[name = editwebnesdayImage]").attr("src", editmenuinner[3].image);
+        $("#notesmodaleditsubmenu .modal-content #editwebnesdayDis").val(editmenuinner[3].description);
+        editmenuinner[3].foodType == 'VEG' ? $('#editwednesdayFoodType [value=true]').attr("selected", true) : $('#editwednesdayFoodType [value=true]').attr("selected", false);
+        editmenuinner[3].foodType == 'NON-VEG' ? $('#editwednesdayFoodType [value=false]').attr("selected", true) : '';
+        $("#notesmodaleditsubmenu .modal-content #subscriptionID").val(editmenuinner[0].subscriptionId);
+
+        $("#notesmodaleditsubmenu .modal-content #editthursdayMenu").val(editmenuinner[4].meal);
+        $("#notesmodaleditsubmenu .modal-content img[name = editthursdayImage]").attr("src", editmenuinner[4].image);
+        $("#notesmodaleditsubmenu .modal-content #editthursdayDis").val(editmenuinner[4].description);
+        editmenuinner[4].foodType == 'VEG' ? $('#editthursdayFoodType [value=true]').attr("selected", true) : $('#editthursdayFoodType [value=true]').attr("selected", false);
+        editmenuinner[4].foodType == 'NON-VEG' ? $('#editthursdayFoodType [value=false]').attr("selected", true) : '';
+        $("#notesmodaleditsubmenu .modal-content #subscriptionID").val(editmenuinner[0].subscriptionId);
+
+         //Sending  update Menu Details
+    $("#updateSubscsriptionMenu").click(function (e) {
+        e.preventDefault();
+        debugger;
+        var uploadSunday_image, uploadMonday_image, uploadTuesday_image, uploadWednesday_image, uploadThursday_image;
+
+        var ids = $(this).parents().find('input[name=ids]').val()
+        /*var plans = $(this).parents().find('input[name=plans]').val()*/
+
+        var files = document.getElementById("editSundayimg_fileUpload").files[0];
+        /*alert(files);*/
+        if (files != undefined) {
+            uploadSunday_image = "https://d2drestmanager.azurewebsites.net/images/" + files.name
+        } else {
+            uploadSunday_image = $("#notesmodaleditsubmenu .modal-content  img[name = editsundayImage]").attr("src");
+        }
+
+ 
+
+        var files = document.getElementById("editMondayimg_fileUpload").files[0];
+       /* alert(files);*/
+        if (files != undefined) {
+            uploadMonday_image = "https://d2drestmanager.azurewebsites.net/images/" + files.name;
+        } else {
+            uploadMonday_image = $("#notesmodaleditsubmenu .modal-content  img[name = editmondayImage]").attr("src");
+        }
+
+        var files = document.getElementById("edittuesday_fileUpload").files[0];
+      /*  alert(files);*/
+        if (files != undefined) {
+            uploadTuesday_image = "https://d2drestmanager.azurewebsites.net/images/" + files.name;
+        } else {
+            uploadTuesday_image = $("#notesmodaleditsubmenu .modal-content  img[name = edittuesdayImage]").attr("src");
+        }
+
+
+        var files = document.getElementById("editwednesday_fileUpload").files[0];
+       /* alert(files);*/
+        if (files != undefined) {
+            uploadWednesday_image = "https://d2drestmanager.azurewebsites.net/images/" + files.name;
+        }
+        else {
+            uploadWednesday_image = $("#notesmodaleditsubmenu .modal-content  img[name = editwebnesdayImage]").attr("src");
+        }
+
+        var files = document.getElementById("editthursday_fileUpload").files[0];
+       /* alert(files);*/
+        if (files != undefined) {
+            uploadThursday_image = "https://d2drestmanager.azurewebsites.net/images/" + files.name;
+        } else {
+            uploadThursday_image = $("#notesmodaleditsubmenu .modal-content  img[name = editwebnesdayImage]").attr("src");
+        }
+
+        var updateArray = []
+        var sunday = {
+            "_id": ids.split(',')[0],
+            //"day": "monday",
+            "meal": $('#editsundayMenu').val(),
+            "image": uploadSunday_image,
+            "description": $('#editsundayDis').val(),
+            "sevenDayPrice": $('#viewsevendayprice').val(),
+            "fifteenDayPrice": $('#editfifteendayprice').val(),
+            "thirtyDayPrice": $('#editthirtydaysdayprice').val(),
+            "foodType": $('#editsundayFoodType :selected').text(),
+            "subscriptionId": $('#subscriptionID').val()
+        };
+        var monday = {
+            "_id": ids.split(',')[1],
+            "meal": $('#editmondayMenu').val(),
+            "image": uploadMonday_image,
+            "description": $('#editmondayDis').val(),
+            "fifteenDayPrice": $('#editfifteendayprice').val(),
+            "thirtyDayPrice": $('#editthirtydaysdayprice').val(),
+            "foodType": $('#editmondayFoodType :selected').text(),
+             "subscriptionId": $('#subscriptionID').val(),
+        };
+        var tuesday = {
+            "_id": ids.split(',')[2],
+            "meal": $('#edittuesdayMenu').val(),
+            "image": uploadTuesday_image,
+            "description": $('#edittuesdayDis').val(),
+            "fifteenDayPrice": $('#editfifteendayprice').val(),
+            "thirtyDayPrice": $('#editthirtydaysdayprice').val(),
+            "foodType": $('#edittuesdayFoodType :selected').text(),
+            "subscriptionId": $('#subscriptionID').val(),
+        };
+
+
+        var wednesday = {
+            "_id": ids.split(',')[3],
+            "meal": $('#editwebnesdayMenu').val(),
+            "image": uploadWednesday_image,
+            "description": $('#editwebnesdayDis').val(),
+            "fifteenDayPrice": $('#editfifteendayprice').val(),
+            "thirtyDayPrice": $('#editthirtydaysdayprice').val(),
+            "foodType": $('#editwednesdayFoodType :selected').text(),
+            "subscriptionId": $('#subscriptionID').val()
+        };
+
+        var thursday = {
+            "_id": ids.split(',')[4],
+            "meal": $('#editthursdayMenu').val(),
+            "image": uploadThursday_image,
+            "description": $('#editthursdayDis').val(),
+            "fifteenDayPrice": $('#editfifteendayprice').val(),
+            "thirtyDayPrice": $('#editthirtydaysdayprice').val(),
+            "foodType": $('#editthursdayFoodType :selected').text(),
+            "subscriptionId": $('#subscriptionID').val()
+        };
+
+
+        updateArray.push(sunday);
+        updateArray.push(monday);
+        updateArray.push(tuesday);
+        updateArray.push(wednesday);
+        updateArray.push(thursday);
+
+        var APIString = '@Model.ConnectionstringeditsubscriptionMenu';
+        //console.log("finalarray", finalarray);
+        //console.log("updatesubscription", updatesubscription)
+        debugger;
+        $.ajax({
+            type: 'POST',
+            url: APIString,
+            data: JSON.stringify({
+                updateArray: updateArray
+              /*  updateArray:updatesubscription*/
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.status) {
+                    toastr.success(data.message);
+                 /*   $('form :input').val('');*/
+                    window.setTimeout(function () {
+                    window.location.href='@Url.Action("AddSubscription", "Subscription")'
+                    }, 2000);
+                    $('#notesmodalcreate').modal('hide');
+
+                } else {
+                    toastr.error(data.message);
+                }
+            },
+            error: function (ajaxContext) {
+                // toastr.success('Record saved', 'Success !!');
+                alert("Please Wait Server Getiing Load");
+            }
+        });
+    })
+    });
+
+    $("#updateSubscsriptionMenu").click(function (e) {
+        debugger;
+        var files = $('#editSundayimg_fileUpload').prop("files");
+        formData = new FormData();
+        formData.append("files", files[0]);
+        $.ajax({
+            type: 'POST',
+            url: "/FoodMenu/ImageSave",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                debugger
+            }
+        });
+    })
+
+    $("#updateSubscsriptionMenu").click(function (e) {
+        debugger;
+        var files = $('#editMondayimg_fileUpload').prop("files");
+        formData = new FormData();
+        formData.append("files", files[0]);
+        $.ajax({
+            type: 'POST',
+            url: "/FoodMenu/ImageSave",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                debugger
+            }
+        });
+    })
+    $("#updateSubscsriptionMenu").click(function (e) {
+        debugger;
+        var files = $('#edittuesday_fileUpload').prop("files");
+        formData = new FormData();
+        formData.append("files", files[0]);
+        $.ajax({
+            type: 'POST',
+            url: "/FoodMenu/ImageSave",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                debugger
+            }
+        });
+    })
+    $("#updateSubscsriptionMenu").click(function (e) {
+        debugger;
+        var files = $('#editwednesday_fileUpload').prop("files");
+        formData = new FormData();
+        formData.append("files", files[0]);
+        $.ajax({
+            type: 'POST',
+            url: "/FoodMenu/ImageSave",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                debugger
+            }
+        });
+    })
+    $("#updateSubscsriptionMenu").click(function (e) {
+        debugger;
+        var files = $('#editthursday_fileUpload').prop("files");
+        formData = new FormData();
+        formData.append("files", files[0]);
+        $.ajax({
+            type: 'POST',
+            url: "/FoodMenu/ImageSave",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                debugger
+            }
+        });
+    })
+
+    /*For upend amount text box*/
+    $("#packagelist").on('change', function () {
+        debugger;
+        var getValue = $(this).val();
+        var getText = $(this).find(":selected").text();
+        var ele = document.getElementById('BasicPrice');
+        ele.innerHTML = "";
+        var APIString = '@Model.Connectionstringfetchsubscriptiontype';
+        debugger;
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            data: JSON.stringify({ subscriptionId: getValue }),
+            dataType: "json",
+            success: function (Result) {
+                debugger;
+                console.log(Result.SubscriptionTitle)
+                getValue = "";
+                for (var i = 0; i < Result.SubscriptionTitle.length; i++) {
+                    // POPULATE SELECT ELEMENT WITH JSON.
+                    @*ele.innerHTML = ele.innerHTML +
+                        '<option value="' + Result.SubscriptionTitle[i]['subscriptionLeastAmount'] + '">' + Result.SubscriptionTitle[i]['subscriptionLeastAmount'] + '</option>';*@
+                    if (Result.SubscriptionTitle[i]['subscriptionTitle'] == getText) {
+                        $(".sevenDayPrice").text(Result.SubscriptionTitle[i]['subscriptionLeastAmount']);
+                        $(".subscriptionFoodType").text(Result.SubscriptionTitle[i]['subscriptionFoodType']);
+                    }
+                }
+
+            },
+            error: function (Result) {
+                console.log(Result)
+                alert(Result);
+            }
+        });
+    });
+
+
+    //Creating subscription Plan
+    $("#AddDetails").click(function (e) {
+     e.preventDefault();
+        debugger;
+        var APIString = '@Model.Connectionstringcreatesubscription';
+        var subscriptioname = $('#SubSubscriptionName').val();
+        var subscriptionleastamount = $('#SubAmount').val();
+        var itemFoodType = $('#subscriptionFoodType :selected').text();
+        var subscriptiondescription = $('#SubDescription').val();
+        var files = document.getElementById("fileUpload").files[0].name;
+       /* alert(files);*/
+        //data = new FormData();
+        //data.append("files", files[0]);
+        var upload_imgae = "https://d2drestmanager.azurewebsites.net/images/" + files;
+
+        debugger;
+        $.ajax({
+            type: 'POST',
+            url: "/Subscription/ImageSave",
+            url: APIString,
+            data: JSON.stringify({
+                /*subscriptionId: subscriptionId,*/
+                subscriptionTitle: subscriptioname.trim(),
+                subscriptionDescription: subscriptiondescription.trim(),
+                subscriptionLeastAmount: subscriptionleastamount.trim(),
+                subscriptionImage: upload_imgae,
+                subscriptionFoodType: itemFoodType
+
+
+            }),
+            dataType: 'json',
+
+            contentType: 'application/json',
+            processData: false,
+            success: function (data) {
+                if (data.status) {
+                    toastr.success(data.message);
+                    $('form :input').val('');
+                    window.setTimeout(function () {
+                    window.location.href='@Url.Action("AddSubscription", "Subscription")'
+                     }, 2000);
+
+                } else {
+                    toastr.error(data.message);
+                }
+            },
+            //error: function (ajaxContext) {
+            //    debugger;
+            //    toastr.error("Try After Sometime", 'Error');
+            //}
+        });
+
+    })
+
+    
+
+
+    /*Adding Package Type List*/
+     $(document).ready(function () {
+        var APIString = '@Model.Connectionstringfetchsubscriptiontype';
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            data: "{}",
+            dataType: "json",
+            success: function (Result) {
+                debugger;
+                $.each(Result.d, function (key, value) {
+                    debugger;
+                    console.log(value)
+                    $("#packagename").append($("<option></option>").val(value.subscriptionId).html(value.subscriptionTitle));
+                });
+                console.log(Result.SubscriptionTitle)
+                var ele = document.getElementById('packagelist');
+                Result.SubscriptionTitle.forEach(function(dt){
+                    // POPULATE SELECT ELEMENT WITH JSON.
+                    ele.innerHTML = ele.innerHTML +
+                        '<option value="' + dt['subscriptionId'] + '">' + dt['subscriptionTitle'] + '</option>';
+                })
+            },
+            error: function (Result) {
+                alert("Please Wait Server Getiing Load");
+            }
+        });
+    });
+    /*For upend amount text box*/
+    $("#packagelist").on('change', function () {
+        debugger;
+        var getValue = $(this).val();
+        var getText = $(this).find(":selected").text();
+        var ele = document.getElementById('BasicPrice');
+        ele.innerHTML = "";
+        var APIString = '@Model.Connectionstringfetchsubscriptiontype';
+        debugger;
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            data: JSON.stringify({ subscriptionId: getValue }),
+            dataType: "json",
+            success: function (Result) {
+                debugger;
+                console.log(Result.SubscriptionTitle)
+                getValue = "";
+                for (var i = 0; i < Result.SubscriptionTitle.length; i++) {
+                    // POPULATE SELECT ELEMENT WITH JSON.
+                    @*ele.innerHTML = ele.innerHTML +
+                        '<option value="' + Result.SubscriptionTitle[i]['subscriptionLeastAmount'] + '">' + Result.SubscriptionTitle[i]['subscriptionLeastAmount'] + '</option>';*@
+                    if (Result.SubscriptionTitle[i]['subscriptionTitle'] == getText) {
+                        $(".sevenDayPrice").text(Result.SubscriptionTitle[i]['subscriptionLeastAmount']);
+                        $(".subscriptionFoodType").text(Result.SubscriptionTitle[i]['subscriptionFoodType']);
+                    }
+                }
+
+            },
+            error: function (Result) {
+                console.log(Result)
+                alert(Result);
+            }
+        });
+    });
+
+    //Sending Menu Details
+    $("#addSubscriptionMenu").click(function (e) {
+        e.preventDefault();
+        debugger;
+        var subscriptionid = $('#packagelist').val();
+        var subscriptiontype = $('#packagelist :selected').text();
+        var sevendayprice = $('#BasicPrice').text();
+        var fifteendayprice = $('#fifteenDayPrice').val();
+        var thirtydayprice = $('#thirtyDayPrice').val();
+        var sundaymeal = $('#sundayMenu').val();
+        var files = document.getElementById("sundayfileUpload").files[0].name;
+        /*alert(files);*/
+        var upload_sunday_imgae = "https://d2drestmanager.azurewebsites.net/images/" + files;
+        var sundaydescription = $('#sundayDis').val();
+        var sundayFoodtype = $('#sundayFoodType :selected').text();
+        var mondaymeal = $('#mondayMenu').val();
+        var files = document.getElementById("mondayfileUpload").files[0].name;
+      /*  alert(files);*/
+        var upload_monday_imgae = "https://d2drestmanager.azurewebsites.net/images/" + files;
+        var mondaydescription = $('#mondayDis').val();
+        var mondayFoodType = $('#mondayFoodType :selected').text();
+        var tuesdaymeal = $('#tusMenu').val();
+        var files = document.getElementById("tuesdayfileUpload").files[0].name;
+       /* alert(files);*/
+        var upload_tuesday_imgae = "https://d2drestmanager.azurewebsites.net/images/" + files;
+        var tuesdaydescription = $('#tusDis').val();
+        var tuesdayFoodType = $('#tuesdayFoodType :selected').text();
+        var wednusdaymeal = $('#webMenu').val();
+        var files = document.getElementById("wednesdayfileUpload").files[0].name;
+       /* alert(files);*/
+        var upload_wednesday_imgae = "https://d2drestmanager.azurewebsites.net/images/" + files;
+        var wednusdaydescription = $('#webDis').val();
+        var wednesdayFoodType = $('#wednesdayFoodType :selected').text();
+        var thursdaymeal = $('#thursMenu').val();
+        var files = document.getElementById("thursdayfileUpload").files[0].name;
+       /* alert(files);*/
+        var upload_thursday_imgae = "https://d2drestmanager.azurewebsites.net/images/" + files;
+        var thursdaydescription = $('#thursDis').val();
+        var thursdayFoodType = $('#thursdayFoodType :selected').text();
+
+        var APIString = '@Model.Connectionstringcreatesubscriptionmenu';
+        debugger;
+        $.ajax({
+            type: 'POST',
+            url: APIString,
+            data: JSON.stringify({
+                subscriptionId: subscriptionid,
+                subscriptionTitle: subscriptiontype,
+                sevenDayPrice: sevendayprice,
+                fifteenDayPrice: fifteendayprice,
+                thirtyDayPrice: thirtydayprice,
+                mondayMeal: sundaymeal,
+                mondayImage: upload_sunday_imgae,
+                mondayDescription: sundaydescription,
+                mondayFoodType: sundayFoodtype,
+                tuesdayMeal: mondaymeal,
+                tuesdayImage: upload_monday_imgae,
+                tuesdayDescription: mondaydescription,
+                tuesdayFoodType: mondayFoodType,
+               wednusdayMeal: tuesdaymeal,
+                wednusdayImage: upload_tuesday_imgae,
+                wednusdayDescription: tuesdaydescription,
+                wednusdayFoodType: tuesdayFoodType,
+                thursdayMeal: wednusdaymeal,
+                thursdayImage: upload_wednesday_imgae,
+                thursdayDescription: wednusdaydescription,
+                thursdayFoodType: wednesdayFoodType,
+                fridayMeal: thursdaymeal,
+                fridayImage: upload_thursday_imgae,
+                fridayDescription: thursdaydescription,
+                fridayFoodType: thursdayFoodType
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.status) {
+                    toastr.success(data.message);
+                    $('form :input').val('');
+                    window.setTimeout(function () {
+                    window.location.href='@Url.Action("AddSubscription", "Subscription")'
+                    }, 2000);
+                    $('#notesmodalcreate').modal('hide');
+
+                } else {
+                    toastr.error(data.message);
+                }
+            },
+            error: function (ajaxContext) {
+                // toastr.success('Record saved', 'Success !!');
+                alert("Fail");
+            }
+        });
+    })
+
+    //Adding image to controller for create subscription Menu
+    $("#addSubscriptionMenu").click(function (e) {
+        debugger;
+        var files = $('#sundayfileUpload').prop("files");
+        formData = new FormData();
+        formData.append("files", files[0]);
+        $.ajax({
+            type: 'POST',
+            url: "/Subscription/ImageSave",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                debugger
+            }
+        });
+    })
+    $("#addSubscriptionMenu").click(function (e) {
+        debugger;
+        var files = $('#mondayfileUpload').prop("files");
+        formData = new FormData();
+        formData.append("files", files[0]);
+        $.ajax({
+            type: 'POST',
+            url: "/Subscription/ImageSave",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                debugger
+            }
+        });
+    })
+    $("#addSubscriptionMenu").click(function (e) {
+        debugger;
+        var files = $('#tuesdayfileUpload').prop("files");
+        formData = new FormData();
+        formData.append("files", files[0]);
+        $.ajax({
+            type: 'POST',
+            url: "/Subscription/ImageSave",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                debugger
+            }
+        });
+    })
+    $("#addSubscriptionMenu").click(function (e) {
+        debugger;
+        var files = $('#wednesdayfileUpload').prop("files");
+        formData = new FormData();
+        formData.append("files", files[0]);
+        $.ajax({
+            type: 'POST',
+            url: "/Subscription/ImageSave",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                debugger
+            }
+        });
+    })
+    $("#addSubscriptionMenu").click(function (e) {
+        debugger;
+        var files = $('#thursdayfileUpload').prop("files");
+        formData = new FormData();
+        formData.append("files", files[0]);
+        $.ajax({
+            type: 'POST',
+            url: "/Subscription/ImageSave",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                debugger
+            }
+        });
+    })
+
+
+
+</script>

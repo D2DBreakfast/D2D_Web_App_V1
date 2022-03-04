@@ -1,0 +1,285 @@
+﻿@model D2D.WebApp.ViewModel.FoodMenuVM
+
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewData["Title"] = "ImageSave";
+}
+
+
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb pl-0">
+                    <li class="breadcrumb-item"><a href="#"><i class="material-icons">home</i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Menu</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add Category</li>
+                </ol>
+            </nav>
+            <!-- <div class="alert alert-success" role="alert">
+               <strong>Well done!</strong> You successfully read this important alert message.
+            </div> -->
+        </div>
+
+        <div class="col-xl-12 col-md-12">
+            <div class="ms-panel ms-panel-fh">
+                <div class="ms-panel-header">
+                    <h6>Add Sub Category</h6>
+                </div>
+                <div class="ms-panel-body">
+                    <form class="needs-validation clearfix" autocomplete="off">
+
+                        <div class="form-row">
+                            <div class="col-md-12 mb-3">
+                                <div class="input-group">
+                                    <label for="validationCustom22"><b> Main Category</b></label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="SubCatList" required>
+                                            <option value="" id="SelMainCat">Select Main Category</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select Sub Catagory.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="validationCustom12"><b>Add Sub-Category</b></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="subCategoryName" id="subCategoryName" required>
+                                    <div class="invalid-feedback">
+                                        Please provide a message.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="validationCustom12"><b>SubCategory Image</b></label>
+                                <div class="custom-file">
+                                    <input class="form-control" name="files" type="file" id="fileUpload" />
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <button type="submit" id="bid" class="btn btn-primary">Add Sub Catagory</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ms-content-wrapper">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="ms-panel">
+                <div class="ms-panel-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="align-self-center align-left">
+                            <h6>Sub Category List</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="ms-panel-body">
+                    <div class="table-responsive">
+                        <table id="myTable" class="table table-hover thead-primary">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Main category</th>
+                                    <th scope="col" style='display:none'>Main categoryID</th>
+                                    <th scope="col">Sub Category</th>
+
+                                    <th scope="col" style='display:none'>Sub CategoryID</th>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/jquery.min.js"></script>
+<script src="~/assets/js/toastr.min.js"></script>
+@*To Refresh Table*@
+<script>
+    //       $(document).ready(function() {
+    //           table = $("#myTable").DataTable();
+    //           $("#bid").on("click", function () {
+    //         table.ajax.reload(null, false);
+    //     });
+    //});
+</script>
+
+<script>
+    $(document).ready(function () {
+        var APIString = '@Model.Connectionstringfetchmaincategory';
+
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            data: "{}",
+            dataType: "json",
+            success: function (Result) {
+                debugger;
+                $.each(Result.d, function (key, value) {
+                    debugger;
+                    console.log(value)
+                     $("#SelMainCat").append($("<option></option>").val(value.mainCategoryId).html(value.subCategoryName));
+                });
+                console.log(Result.mainCategoryData)
+                var ele = document.getElementById('SubCatList');
+                for (var i = 0; i < Result.MainCategoryData.length; i++) {
+                    // POPULATE SELECT ELEMENT WITH JSON.
+                    ele.innerHTML = ele.innerHTML +
+                        '<option value="' + Result.MainCategoryData[i]['mainCategoryId'] + '">' + Result.MainCategoryData[i]['mainCategoryName'] + '</option>';
+                }
+            },
+            error: function (Result) {
+                alert("Error or Error");
+            }
+        });
+    });
+</script>
+
+<script>
+    $("#bid").click(function (e) {
+        e.preventDefault();
+
+        var APIString = '@Model.Connectionstringaddsubcategory';
+        var mainCategoryId = $('#SubCatList').val();
+        var subCategoryName = $('#subCategoryName').val();
+        var files = document.getElementById("fileUpload").files[0].name;
+        /*alert(files);*/
+        //data = new FormData();
+        //data.append("files", files[0]);
+        var upload_imgae = "https://d2drestmanager.azurewebsites.net/images/" + files;
+        debugger;
+        $.ajax({
+            type: 'POST',
+            url: APIString,
+            data: JSON.stringify({
+                mainCategoryId: mainCategoryId.trim(),
+                subCategoryName: subCategoryName.trim(),
+                subCategoryImage: upload_imgae,
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.status) {
+                    toastr.success(data.message); {
+                        $('form :input').val('');
+                         window.setTimeout(function () {
+                            window.location.href='@Url.Action("AddSubCategory", "FoodMenu")'
+                        }, 1000);
+                    }
+                } else {
+                    toastr.error(data.message);
+                }
+            },
+            //error: function (ajaxContext) {
+            //    toastr.error("Try After Sometime", 'Error');
+            //}
+        });
+    })
+    // To Table list
+    $(document).ready(function () {
+        var APIString = '@Model.Connectionstringfetchallsubcatlist';
+        debugger;
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: APIString,
+            data: "{}",
+            dataType: "json",
+            success: function (res, status) {
+                debugger;
+                console.log("myres", res);
+                var data = res.list;
+                data.forEach(function (dt) {
+                    console.log(dt);
+                    dt.subCategoryList.forEach(function (it) {
+                        $("#myTable").append("<tr>" +
+                            "<td>" + dt.mainCategoryName + "</td>" +
+                            "<td>" + it.subCategoryName + "</td>" +
+                            "<td style='display:none'>" + it.mainCategoryId + "</td>" +
+                            "<td style='display:none'>" + it.subCategoryId + "</td>" +
+                            "<td>" + '<img src="' + it.subCategoryImage + '">' + "</td>" +
+                            "<td>" + `<a id="delete"><i class='far fa-trash-alt ms-text-danger'></i></a>` + "</td>")
+                    })
+                })
+            },
+            error: function (Result) {
+                alert("Error");
+            }
+        });
+    });
+
+    //Delete
+    $(document).on('click', "#delete",  function () {
+        debugger;
+        var id = $(this).closest('tr').attr('id');
+        var currentRow = $(this).closest("tr");
+        var mainCategoryName = currentRow.find("td:eq(0)").text(); // get current row 1st TD value
+        var mainCategoryID = currentRow.find("td:eq(1)").text();
+        var subCategoryName = currentRow.find("td:eq(2)").text();
+        var subCategoryID = currentRow.find("td:eq(3)").text();
+        if (confirm(`Are you sure to delete this item ${mainCategoryID} ?`)) {
+            var APIString = '@Model.ConnectionstringdeleteSubCategory';
+            $.ajax({
+                type: 'POST',
+                url: APIString,
+                data: JSON.stringify({
+                    mainCategoryId: subCategoryName,
+                    subCategoryId: subCategoryID,
+                }),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    console.log("dataaaaaaaaaaaaaaaa", data)
+                    debugger;
+                    if (data.status) {
+                        toastr.success(data.message)
+                        window.setTimeout(function () {
+                            window.location.href = '@Url.Action("AddSubCategory", "FoodMenu")';
+                        }, 1000);
+                    } else {
+                        toastr.error(data.message)
+                    }
+                },
+            });
+        }
+    })
+
+    //Adding image to controller
+    $("#bid").click(function (e) {
+        debugger;
+        var files = $('#fileUpload').prop("files");
+        formData = new FormData();
+        formData.append("files", files[0]);
+        $.ajax({
+            type: 'POST',
+            url: "/FoodMenu/ImageSave",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                debugger
+            }
+        });
+    })
+
+</script>
+
+
